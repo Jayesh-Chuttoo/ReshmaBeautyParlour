@@ -1,0 +1,42 @@
+.checkoutLayout {
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: var(--spaceMd);
+  align-items: start;
+}
+
+.checkoutLayout form h3 { margin-bottom: var(--spaceMd); }
+.checkoutLayout form .button { margin-top: var(--spaceMd); }
+
+.formSectionTitle {
+  margin-top: var(--spaceLg);
+  padding-top: var(--spaceMd);
+  border-top: 1px solid var(--colourLine);
+}
+
+.checkoutSummary { position: sticky; top: 92px; }
+.checkoutSummary h3 { margin-bottom: var(--spaceMd); }
+
+/* One line of the order recap */
+.summaryItem {
+  display: grid;
+  grid-template-columns: 54px 1fr auto;
+  gap: var(--spaceSm);
+  align-items: center;
+  padding-bottom: var(--spaceSm);
+  margin-bottom: var(--spaceSm);
+  border-bottom: 1px solid var(--colourLine);
+}
+
+.summaryPicture { width: 54px; height: 62px; border-radius: var(--radiusSmall); }
+.summaryPicture.isMissing::after { content: none; }   /* too small for words */
+.summaryItem p { font-size: 15px; }
+
+.checkoutSummary .summaryTotal { margin-bottom: var(--spaceSm); }
+
+@media (max-width: 900px) {
+  .checkoutLayout { grid-template-columns: 1fr; }
+
+  /* Show what is being paid for before the form on a small screen */
+  .checkoutSummary { position: static; order: -1; }
+}

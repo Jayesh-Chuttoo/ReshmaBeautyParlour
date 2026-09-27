@@ -1,0 +1,80 @@
+.paymentLayout {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: var(--spaceMd);
+  align-items: start;
+}
+
+.codePanel {
+  background: linear-gradient(150deg, #FFFFFF 0%, #FDF3F8 100%);
+  border-color: var(--colourRose);
+}
+
+.copyRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spaceSm);
+  flex-wrap: wrap;
+  margin-bottom: var(--spaceSm);
+}
+
+.bigCode { font-family: var(--fontHeading); font-size: 32px; letter-spacing: 1px; }
+.bigAmount { font-family: var(--fontHeading); font-size: 28px; }
+.bigNumber { font-family: var(--fontHeading); font-size: 24px; }
+
+.copyLabel { margin-top: var(--spaceMd); }
+.expiryNotice { margin-top: var(--spaceMd); }
+
+/* The four numbered steps, with the circles drawn in CSS */
+.paySteps {
+  margin-top: var(--spaceLg);
+  padding-left: 0;
+  list-style: none;
+  counter-reset: pay;        /* start a counter called pay at 0 */
+}
+
+.paySteps li {
+  counter-increment: pay;    /* add 1 for each step */
+  position: relative;
+  padding: 0 0 var(--spaceLg) 54px;
+  border-left: 2px solid var(--colourLine);
+  margin-left: 17px;
+}
+
+.paySteps li:last-child { border-left-color: transparent; padding-bottom: 0; }
+
+.paySteps li::before {
+  content: counter(pay);
+  position: absolute;
+  left: -18px;
+  top: 0;
+  width: 36px;
+  height: 36px;
+  background-color: var(--colourSky);
+  border-radius: var(--radiusRound);
+  font-family: var(--fontHeading);
+  font-size: 17px;
+  line-height: 36px;
+  text-align: center;
+}
+
+.paySteps h3 { margin-bottom: 4px; }
+.paySteps .button, .paySteps .notice { margin-top: var(--spaceSm); }
+
+.paymentSummary { position: sticky; top: 92px; }
+.paymentSummary h3 { margin-bottom: var(--spaceMd); }
+.paymentSummary .button { margin-bottom: var(--spaceSm); }
+
+.statusLine { margin: var(--spaceMd) 0; }
+
+@media (max-width: 900px) {
+  .paymentLayout { grid-template-columns: 1fr; }
+  .paymentSummary { position: static; }
+}
+
+@media (max-width: 480px) {
+  .bigCode { font-size: 26px; }
+  .bigAmount { font-size: 24px; }
+  .paySteps li { padding-left: 46px; }
+}

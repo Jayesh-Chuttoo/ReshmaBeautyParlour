@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>About and contact - Reshma Beauty Parlour</title>
+  <meta name="description" content="Opening hours, address, payment and returns policy for Reshma Beauty Parlour in Curepipe.">
+
+  <link rel="stylesheet" href="../css/palette.css">
+  <link rel="stylesheet" href="../css/siteShell.css">
+  <link rel="stylesheet" href="../css/about.css">
+  <link rel="icon" href="../images/logoReshma.svg">
+</head>
+<body data-root="../">
+
+  <div id="siteHeader" data-page="about"></div>
+
+  <main>
+
+    <section class="wrap section aboutTop">
+      <div>
+        <h1>A salon that grew a boutique</h1>
+        <p>
+          Reshma opened one chair in Curepipe in 2014, doing hair for neighbours
+          and for brides who wanted someone to come to the house. Nails came
+          next, then a small rail of clothing near the window, then the watch
+          case by the door.
+        </p>
+        <p>
+          The salon is still small on purpose. One client at a time, a proper
+          conversation about what you want, and a price agreed before anything
+          starts.
+        </p>
+        <a class="button buttonMain" href="booking.html">Request a booking</a>
+      </div>
+      <!-- picture.js fills this with siteImages.aboutSalon -->
+      <div class="aboutPicture" data-picture="aboutSalon" data-alt="Inside the salon"></div>
+    </section>
+
+    <section class="wrap section">
+      <div class="aboutGrid">
+
+        <div class="panel">
+          <h3>Opening hours</h3>
+          <!-- openingHours.js fills this from businessInfo.openingHours -->
+          <div id="openingHours"></div>
+          <p class="small muted hoursNote">Home visits by arrangement, including Mondays.</p>
+        </div>
+
+        <div class="panel">
+          <h3>Where to find us</h3>
+          <!-- about.js fills the address, and contactLinks.js the list -->
+          <p id="salonAddress"></p>
+          <p class="small muted">
+            Home visits cover Curepipe, Vacoas, Quatre Bornes and Floreal.
+            Other areas on request.
+          </p>
+          <ul class="contactList" id="contactList"></ul>
+        </div>
+
+        <div class="panel">
+          <h3>Paying and returns</h3>
+          <p class="small">
+            Orders are paid by MCB Juice after you place them. You get a purchase
+            code, you send the exact amount, and we confirm once we see it.
+            No card details are ever asked for on this website.
+          </p>
+          <p class="small">
+            Clothing can be exchanged within 3 days if unworn, with the purchase
+            code. Watches carry a 6-month warranty on the movement.
+          </p>
+          <button class="button buttonPlain buttonSmall" type="button" onclick="openModal('policyModal')">
+            Read the full policy
+          </button>
+        </div>
+
+      </div>
+    </section>
+
+    <section class="wrap section">
+      <div class="sectionHead">
+        <h2>Questions people ask</h2>
+      </div>
+
+      <!-- about.js fills this from faqList.js using the questionItem component -->
+      <div id="questionList"></div>
+    </section>
+
+  </main>
+
+  <footer id="siteFooter"></footer>
+
+  <div class="modal" id="policyModal" role="dialog" aria-modal="true" aria-labelledby="policyTitle">
+    <div class="modalBox modalBoxWide">
+      <button class="modalClose" type="button" data-close aria-label="Close">&times;</button>
+      <h3 id="policyTitle">Payment and returns policy</h3>
+
+      <h4 class="policyHeading">Paying</h4>
+      <p class="small">
+        All prices are in Mauritian rupees. Orders are paid by MCB Juice transfer
+        to the number shown on the payment screen, using the purchase code as the
+        reference. An order is confirmed only after we have checked the transfer.
+      </p>
+
+      <h4 class="policyHeading">Holding your items</h4>
+      <p class="small">
+        Items are held for 48 hours from the moment the order is placed. After
+        that the order is cancelled and the items go back on sale.
+      </p>
+
+      <h4 class="policyHeading">Exchanges</h4>
+      <p class="small">
+        Clothing can be exchanged within 3 days, unworn and with tags, when you
+        show the purchase code. Sale items and earrings cannot be exchanged.
+        Watches carry a 6-month warranty on the movement, not on the strap or glass.
+      </p>
+
+      <h4 class="policyHeading">Appointments</h4>
+      <p class="small">
+        Tell us at least 4 hours before if you cannot come. For home visits we
+        ask for a day's notice so the travel can be re-arranged.
+      </p>
+
+      <div class="modalActions">
+        <button class="button buttonSoft" type="button" data-close>Close</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="../js/data/businessInfo.js"></script>
+  <script src="../js/data/siteImages.js"></script>
+  <script src="../js/data/cartItems.js"></script>
+  <script src="../js/data/faqList.js"></script>
+  <script src="../js/modalPopup.js"></script>
+  <script src="../js/components/picture.js"></script>
+  <script src="../js/components/contactLinks.js"></script>
+  <script src="../js/components/siteHeader.js"></script>
+  <script src="../js/components/siteFooter.js"></script>
+  <script src="../js/components/messageModal.js"></script>
+  <script src="../js/components/openingHours.js"></script>
+  <script src="../js/components/questionItem.js"></script>
+  <script src="../js/about.js"></script>
+</body>
+</html>

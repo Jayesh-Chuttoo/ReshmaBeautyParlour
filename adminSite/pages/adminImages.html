@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Pictures - Reshma Beauty Parlour admin</title>
+  <meta name="robots" content="noindex">
+
+  <link rel="stylesheet" href="../css/palette.css">
+  <link rel="stylesheet" href="../css/siteShell.css">
+  <link rel="stylesheet" href="../css/adminShell.css">
+  <link rel="stylesheet" href="../css/adminImages.css">
+  <link rel="icon" href="../images/logoReshma.svg">
+</head>
+<body>
+
+  <header id="adminHeader"></header>
+
+  <div class="adminLayout">
+    <nav id="adminMenu" data-page="images"></nav>
+
+    <main>
+      <div class="adminHead">
+        <div>
+          <h1>Pictures</h1>
+          <p class="small muted">
+            Every picture on the website. Choose a new one, check it, then save.
+            A coloured box means no picture has been added yet.
+          </p>
+        </div>
+      </div>
+
+      <div class="adminToolbar panel">
+        <input type="search" id="imageSearch" placeholder="Search by name">
+        <!-- adminImages.js fills the choices from imageGroups -->
+        <select id="groupFilter"></select>
+        <span class="small muted" id="imageCount"></span>
+      </div>
+
+      <!-- adminImages.js fills this with one imageSlotCard per picture -->
+      <div class="imageGrid" id="imageGrid"></div>
+
+      <p class="notice emptyNote" id="noImages" hidden>
+        No picture matches that search. Clear the box above to see them all.
+      </p>
+    </main>
+  </div>
+
+  <script src="../js/data/adminAccount.js"></script>
+  <script src="../js/data/adminSettings.js"></script>
+  <script src="../js/data/imageSlots.js"></script>
+  <script src="../js/modalPopup.js"></script>
+  <script src="../js/components/adminShell.js"></script>
+  <script src="../js/components/messageModal.js"></script>
+  <script src="../js/components/formField.js"></script>
+  <script src="../js/components/tableFilter.js"></script>
+  <script src="../js/components/picture.js"></script>
+  <script src="../js/components/imageSlotCard.js"></script>
+  <script src="../js/adminImages.js"></script>
+</body>
+</html>

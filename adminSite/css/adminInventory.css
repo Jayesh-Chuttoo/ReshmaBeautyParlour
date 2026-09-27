@@ -1,0 +1,16 @@
+/* The small box for typing a new stock number, inside the table */
+.stockInput { width: 84px; padding: 8px 10px; text-align: center; }
+
+/* Rows coloured by how much stock is left. The classes come from
+   colourStockRow() in the stockRow component. */
+tbody tr.isLow { background-color: #FFF3F8; }
+tbody tr.isOut { background-color: #F2EFF4; }
+tbody tr.isOut td:first-child { color: var(--colourInkSoft); }
+
+.legend { margin-top: var(--spaceSm); }
+
+#editProductForm, #addProductForm { margin-top: var(--spaceMd); }
+
+@media (max-width: 480px) {
+  .stockInput { width: 70px; }
+}

@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bookings - Reshma Beauty Parlour admin</title>
+  <meta name="robots" content="noindex">
+
+  <link rel="stylesheet" href="../css/palette.css">
+  <link rel="stylesheet" href="../css/siteShell.css">
+  <link rel="stylesheet" href="../css/adminShell.css">
+  <link rel="stylesheet" href="../css/adminBookings.css">
+  <link rel="icon" href="../images/logoReshma.svg">
+</head>
+<body>
+
+  <header id="adminHeader"></header>
+
+  <div class="adminLayout">
+    <nav id="adminMenu" data-page="bookings"></nav>
+
+    <main>
+      <div class="adminHead">
+        <div>
+          <h1>Bookings</h1>
+          <p class="small muted">Confirm the real time and, for quoted services, the agreed price.</p>
+        </div>
+        <span class="countPill" id="requestedPill"></span>
+      </div>
+
+      <div class="adminToolbar panel">
+        <input type="search" id="bookingSearch" placeholder="Search by code, name or phone">
+        <!-- adminBookings.js fills the choices from bookingStatuses -->
+        <select id="bookingStatusFilter"></select>
+        <span class="small muted" id="bookingCount"></span>
+      </div>
+
+      <div class="tableHolder">
+        <table>
+          <thead>
+            <tr>
+              <th>Code</th><th>Client</th><th>Service</th>
+              <th>Asked for</th><th>Where</th><th>Status</th><th></th>
+            </tr>
+          </thead>
+          <!-- adminBookings.js fills this using the bookingRow component -->
+          <tbody id="bookingRows"></tbody>
+        </table>
+      </div>
+
+      <p class="notice emptyNote" id="noBookings" hidden>
+        No booking matches that search. Clear the boxes above to see them all.
+      </p>
+    </main>
+  </div>
+
+  <div class="modal" id="bookingModal" role="dialog" aria-modal="true" aria-labelledby="bookingModalTitle">
+    <div class="modalBox modalBoxWide">
+      <button class="modalClose" type="button" data-close aria-label="Close">&times;</button>
+
+      <h3 id="bookingModalTitle"></h3>
+      <p class="small muted" id="bookingModalStatus"></p>
+
+      <div class="detailGrid">
+        <div><p class="small muted">Client</p><p id="bookingModalClient"></p></div>
+        <div><p class="small muted">Phone</p><p id="bookingModalPhone"></p></div>
+        <div><p class="small muted">Service</p><p id="bookingModalService"></p></div>
+        <div><p class="small muted">Where</p><p id="bookingModalPlace"></p></div>
+        <div><p class="small muted">Asked for</p><p id="bookingModalAsked"></p></div>
+      </div>
+
+      <p class="small muted detailLabel">Notes from the client</p>
+      <p id="bookingModalNotes"></p>
+
+      <a class="button buttonSoft buttonSmall whatsappLink" id="bookingModalWhatsapp" href="#">
+        Message the client on WhatsApp
+      </a>
+
+      <form class="statusForm" id="bookingStatusForm" novalidate>
+        <div class="field">
+          <label for="bookingNewStatus">Move this booking to</label>
+          <select id="bookingNewStatus">
+            <option value="confirmed">Confirmed</option>
+            <option value="completed">Completed</option>
+            <option value="declined">Not available</option>
+            <option value="cancelled">Cancelled</option>
+          </select>
+        </div>
+
+        <!-- These appear only when the booking is being confirmed -->
+        <div id="confirmFields">
+          <div class="twoColumns">
+            <div class="field">
+              <label for="confirmedDate">Confirmed date</label>
+              <input type="date" id="confirmedDate">
+              <span class="errorText">Choose the date you agreed.</span>
+            </div>
+
+            <div class="field">
+              <label for="confirmedTime">Confirmed time</label>
+              <input type="time" id="confirmedTime">
+              <span class="errorText">Choose the time you agreed.</span>
+            </div>
+          </div>
+
+          <div class="field" id="priceField" hidden>
+            <label for="agreedPrice">Agreed price in rupees</label>
+            <input type="number" id="agreedPrice" min="0">
+            <span class="hint">Needed because this service is quoted case by case.</span>
+            <span class="errorText">Enter the price you agreed with the client.</span>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="bookingMessage">Message to the client</label>
+          <textarea id="bookingMessage" placeholder="Shown on the client's status page"></textarea>
+          <span class="hint" id="bookingMessageHint">Optional when confirming.</span>
+          <span class="errorText">A message is required when declining or cancelling.</span>
+        </div>
+
+        <div class="modalActions">
+          <button class="button buttonMain" type="submit">Save booking</button>
+          <button class="button buttonPlain" type="button" data-close>Close</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="../js/data/adminAccount.js"></script>
+  <script src="../js/data/adminSettings.js"></script>
+  <script src="../js/data/adminData.js"></script>
+  <script src="../js/modalPopup.js"></script>
+  <script src="../js/components/adminShell.js"></script>
+  <script src="../js/components/messageModal.js"></script>
+  <script src="../js/components/formField.js"></script>
+  <script src="../js/components/tableFilter.js"></script>
+  <script src="../js/components/statusTag.js"></script>
+  <script src="../js/components/bookingRow.js"></script>
+  <script src="../js/adminBookings.js"></script>
+</body>
+</html>

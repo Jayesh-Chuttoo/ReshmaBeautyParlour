@@ -1,0 +1,39 @@
+.shopToolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--spaceMd);
+  margin-bottom: var(--spaceMd);
+}
+
+.sortBox { display: flex; align-items: center; gap: var(--spaceSm); }
+.sortBox label { font-size: 14px; color: var(--colourInkSoft); }
+.sortBox select { width: 200px; }
+
+.productGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: var(--spaceMd);
+  margin-top: var(--spaceSm);
+}
+
+.productCard .cardPicture { height: 300px; }
+.productCard h3 { font-size: 19px; margin: var(--spaceXs) 0; }
+.productCard h3 a { text-decoration: none; }
+.productCard .price { margin-bottom: 2px; }
+.productCard .button { margin-top: var(--spaceSm); }
+
+.productCard[hidden] { display: none; }
+
+/* Sold-out items are dimmed but stay on the page */
+.productCard.isSoldOut .cardPicture { opacity: 0.55; }
+
+@media (max-width: 768px) {
+  .sortBox { width: 100%; }
+  .sortBox select { width: 100%; }
+}
+
+@media (max-width: 480px) {
+  .productCard .cardPicture { height: 240px; }
+}

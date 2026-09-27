@@ -1,0 +1,28 @@
+.loginPage {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 20px;
+  background: linear-gradient(160deg, var(--colourLilac) 0%, var(--colourSky) 100%);
+}
+
+.loginBox {
+  width: 100%;
+  max-width: 380px;
+  padding: var(--spaceLg);
+  background-color: var(--colourCard);
+  border-radius: var(--radiusLarge);
+  text-align: center;
+}
+
+.loginLogo { width: 64px; height: 64px; margin: 0 auto var(--spaceSm); }
+
+.loginBox h1 { font-size: 26px; margin-bottom: var(--spaceXs); }
+.loginBox p { margin: 0 auto; }
+
+.loginBox form { margin-top: var(--spaceLg); text-align: left; }
+
+.loginBack { margin-top: var(--spaceMd); }
+
+.showPassword { margin-bottom: var(--spaceMd); }

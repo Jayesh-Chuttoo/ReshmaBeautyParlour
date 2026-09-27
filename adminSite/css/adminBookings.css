@@ -1,0 +1,11 @@
+/* ==========================================================================
+   The tables and the detail pop-up are styled in adminShell.css, because
+   the orders screen uses the same pieces.
+   ========================================================================== */
+
+/* The client's notes can be long, so let them use the full width */
+#bookingModalNotes { max-width: none; line-height: 24px; }
+
+/* The third detail box sits alone on its row, which looks better
+   stretched across both columns */
+.detailGrid div:last-child { grid-column: 1 / -1; }

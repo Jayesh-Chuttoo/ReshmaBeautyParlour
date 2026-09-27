@@ -1,0 +1,105 @@
+/* ==========================================================================
+   Colours, fonts and spacing used by every page. Load this one first.
+   Change a value here and it changes everywhere.
+   ========================================================================== */
+
+:root {
+  /* Brand colours from the salon's palette */
+  --colourLilac: #CDB4DB;
+  --colourBlush: #FFC8DD;
+  --colourRose: #FFAFCC;
+  --colourSky: #BDE0FE;
+  --colourAzure: #A2D2FF;
+
+  /* Supporting colours */
+  --colourInk: #3A2E4F;       /* main text: a soft dark purple */
+  --colourInkSoft: #6B6285;   /* captions and helper text */
+  --colourPage: #FFFBFD;
+  --colourCard: #FFFFFF;
+  --colourLine: #EFE1EE;
+  --colourGood: #2F7D5B;
+  --colourWarn: #A4462F;
+
+  /* Two typefaces only: a serif for headings, the system sans for reading */
+  --fontHeading: Georgia, "Times New Roman", serif;
+  --fontBody: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+
+  /* Spacing steps, all in px */
+  --spaceXs: 6px;
+  --spaceSm: 12px;
+  --spaceMd: 20px;
+  --spaceLg: 32px;
+  --spaceXl: 56px;
+
+  --radiusSmall: 10px;
+  --radiusLarge: 18px;
+  --radiusRound: 999px;
+
+  --pageWidth: 1120px;
+}
+
+/* A small reset so every browser starts the same way */
+* {
+  box-sizing: border-box;   /* padding and border count inside the width */
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--fontBody);
+  font-size: 16px;
+  line-height: 26px;
+  color: var(--colourInk);
+  background-color: var(--colourPage);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--fontHeading);
+  font-weight: normal;
+  color: var(--colourInk);
+  line-height: 1.2;
+}
+
+h1 { font-size: 44px; }
+h2 { font-size: 32px; }
+h3 { font-size: 22px; }
+h4 { font-size: 18px; }
+
+p { max-width: 680px; };  /* keeps lines short enough to read comfortably */
+
+a {
+  color: var(--colourInk);
+  text-decoration-color: var(--colourRose);
+  text-underline-offset: 3px;
+}
+
+img { max-width: 100%; display: block; }
+
+/* Keyboard users must be able to see where they are */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 3px solid var(--colourAzure);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none !important; transition: none !important; }
+}
+
+/* Smaller headings on tablet and phone. 768px and 480px are the two
+   breakpoints used by the whole site. */
+@media (max-width: 768px) {
+  h1 { font-size: 34px; }
+  h2 { font-size: 26px; }
+  h3 { font-size: 20px; }
+}
+
+@media (max-width: 480px) {
+  body { font-size: 15px; line-height: 24px; }
+  h1 { font-size: 28px; }
+  h2 { font-size: 22px; }
+}

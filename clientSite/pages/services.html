@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Services - Reshma Beauty Parlour</title>
+  <meta name="description" content="Hair, nail and beauty services at the salon or at your place.">
+
+  <!-- ../ means "go up one folder", because this file lives in pages/ -->
+  <link rel="stylesheet" href="../css/palette.css">
+  <link rel="stylesheet" href="../css/siteShell.css">
+  <link rel="stylesheet" href="../css/services.css">
+  <link rel="icon" href="../images/logoReshma.svg">
+</head>
+<!-- data-root is "../" because this file lives in pages/ -->
+<body data-root="../">
+
+  <div id="siteHeader" data-page="services"></div>
+
+  <main class="wrap section">
+
+    <div class="sectionHead">
+      <h1>Services</h1>
+      <p>Choose a service, then tell us when suits you. Nothing is paid on this page.</p>
+    </div>
+
+    <div class="filterBar panel">
+      <div class="filterGroup">
+        <span class="filterLabel">Category</span>
+        <!-- services.js fills both rows using the filterChips component -->
+        <div class="choiceRow" id="categoryChips"></div>
+      </div>
+
+      <div class="filterGroup">
+        <span class="filterLabel">Where</span>
+        <div class="choiceRow" id="placeChips"></div>
+      </div>
+    </div>
+
+    <p class="small muted" id="resultCount"></p>
+
+    <!-- services.js fills this using the serviceCard component -->
+    <div class="serviceGrid" id="serviceGrid"></div>
+
+    <p class="notice" id="noResults" hidden>
+      No service matches those two filters. Try "Anywhere" to see the full list.
+    </p>
+
+  </main>
+
+  <footer id="siteFooter"></footer>
+
+  <script src="../js/data/businessInfo.js"></script>
+  <script src="../js/data/siteImages.js"></script>
+  <script src="../js/data/cartItems.js"></script>
+  <script src="../js/data/services.js"></script>
+  <script src="../js/modalPopup.js"></script>
+  <script src="../js/components/picture.js"></script>
+  <script src="../js/components/contactLinks.js"></script>
+  <script src="../js/components/siteHeader.js"></script>
+  <script src="../js/components/siteFooter.js"></script>
+  <script src="../js/components/messageModal.js"></script>
+  <script src="../js/components/filterChips.js"></script>
+  <script src="../js/components/serviceCard.js"></script>
+  <script src="../js/services.js"></script>
+</body>
+</html>

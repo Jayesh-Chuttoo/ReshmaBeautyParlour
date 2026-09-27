@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Track your order or booking - Reshma Beauty Parlour</title>
+
+  <link rel="stylesheet" href="../css/palette.css">
+  <link rel="stylesheet" href="../css/siteShell.css">
+  <link rel="stylesheet" href="../css/track.css">
+  <link rel="icon" href="../images/logoReshma.svg">
+</head>
+<body data-root="../">
+
+  <div id="siteHeader" data-page="track"></div>
+
+  <main class="wrap section">
+
+    <div class="sectionHead">
+      <h1>Track your order or booking</h1>
+      <p>Enter the code we gave you and the mobile number you used. Both must match.</p>
+    </div>
+
+    <form class="panel lookupForm" id="lookupForm" novalidate>
+      <div class="twoColumns">
+        <div class="field">
+          <label for="lookupCode">Code</label>
+          <input type="text" id="lookupCode" name="code" placeholder="ORD-7KQ2M9 or BK-4TM7QX">
+          <span class="hint">Order codes start with ORD, booking codes with BK.</span>
+          <span class="errorText">Enter the code from your confirmation.</span>
+        </div>
+
+        <div class="field">
+          <label for="lookupMobile">Mobile number</label>
+          <input type="tel" id="lookupMobile" name="mobile" placeholder="5xxx xxxx">
+          <span class="errorText">Enter the 8-digit number you used.</span>
+        </div>
+      </div>
+
+      <button class="button buttonMain" type="submit">Find it</button>
+    </form>
+
+    <!-- Hidden until a code starting with ORD is looked up.
+         track.js fills it from orderExamples.js.
+         Backend will handle this later: the real details come from the server. -->
+    <section class="panel resultPanel" id="orderResult" hidden>
+      <div class="resultHead">
+        <div>
+          <p class="small muted">Order</p>
+          <h2 id="orderResultCode"></h2>
+        </div>
+        <span id="orderResultStatus"></span>
+      </div>
+
+      <p>We are checking your payment. You will see the status change once we find it.</p>
+
+      <!-- Steps already done are filled in, later ones stay pale -->
+      <ol class="timeline" id="orderTimeline"></ol>
+
+      <h3 class="resultSubtitle">Items</h3>
+      <div class="summaryLines" id="orderResultLines"></div>
+
+      <div class="notice resultNote" id="orderResultNote"></div>
+
+      <a class="button buttonSoft" id="orderWhatsapp" href="#">Ask about this order</a>
+    </section>
+
+    <section class="panel resultPanel" id="bookingResult" hidden>
+      <div class="resultHead">
+        <div>
+          <p class="small muted">Booking</p>
+          <h2 id="bookingResultCode"></h2>
+        </div>
+        <span id="bookingResultStatus"></span>
+      </div>
+
+      <p id="bookingResultIntro"></p>
+
+      <h3 class="resultSubtitle">Details</h3>
+      <div class="summaryLines" id="bookingResultLines"></div>
+
+      <div class="notice resultNote" id="bookingResultNote"></div>
+
+      <a class="button buttonSoft" id="bookingWhatsapp" href="#">Ask about this booking</a>
+    </section>
+
+  </main>
+
+  <footer id="siteFooter"></footer>
+
+  <script src="../js/data/businessInfo.js"></script>
+  <script src="../js/data/siteImages.js"></script>
+  <script src="../js/data/cartItems.js"></script>
+  <script src="../js/data/statusLabels.js"></script>
+  <script src="../js/data/orderExamples.js"></script>
+  <script src="../js/modalPopup.js"></script>
+  <script src="../js/components/picture.js"></script>
+  <script src="../js/components/contactLinks.js"></script>
+  <script src="../js/components/siteHeader.js"></script>
+  <script src="../js/components/siteFooter.js"></script>
+  <script src="../js/components/messageModal.js"></script>
+  <script src="../js/components/formField.js"></script>
+  <script src="../js/components/orderLines.js"></script>
+  <script src="../js/components/statusTag.js"></script>
+  <script src="../js/track.js"></script>
+</body>
+</html>

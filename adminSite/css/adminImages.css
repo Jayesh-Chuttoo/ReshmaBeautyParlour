@@ -1,0 +1,38 @@
+/* ==========================================================================
+   The Pictures screen. The cards, tags and buttons come from siteShell.css,
+   the toolbar from adminShell.css.
+   ========================================================================== */
+
+.imageGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: var(--spaceMd);
+}
+
+.imageSlot[hidden] { display: none; }
+
+/* The preview keeps the same shape whatever the picture's size */
+.imageSlotPreview .picture { aspect-ratio: 4 / 3; }
+
+/* A picture chosen but not saved yet gets a coloured frame */
+.imageSlotPreview.isNew .picture { outline: 4px solid var(--colourRose); outline-offset: -4px; }
+
+.imageSlot h3 { font-size: 18px; margin: var(--spaceXs) 0 2px; }
+.imageSlot p { margin-bottom: 2px; }
+
+/* The file path is long and has no spaces, so let it break anywhere */
+.slotPath { color: var(--colourInkSoft); word-break: break-all; }
+
+.slotChosen { margin-top: var(--spaceXs); color: var(--colourGood); word-break: break-all; }
+
+.slotActions {
+  position: relative;          /* keeps the hidden file box inside the card */
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spaceXs);
+  margin-top: var(--spaceSm);
+}
+
+/* The file box is hidden; the label right after it is the visible button.
+   When the box has keyboard focus, the label shows the focus ring instead. */
+.slotActions input:focus + .slotChoose { outline: 3px solid var(--colourAzure); outline-offset: 2px; }

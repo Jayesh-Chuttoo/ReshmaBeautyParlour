@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Stock - Reshma Beauty Parlour admin</title>
+  <meta name="robots" content="noindex">
+
+  <link rel="stylesheet" href="../css/palette.css">
+  <link rel="stylesheet" href="../css/siteShell.css">
+  <link rel="stylesheet" href="../css/adminShell.css">
+  <link rel="stylesheet" href="../css/adminInventory.css">
+  <link rel="icon" href="../images/logoReshma.svg">
+</head>
+<body>
+
+  <!-- Both of these are filled in by the adminShell component -->
+  <header id="adminHeader"></header>
+
+  <div class="adminLayout">
+    <nav id="adminMenu" data-page="stock"></nav>
+
+    <main>
+      <div class="adminHead">
+        <div>
+          <h1>Stock</h1>
+          <p class="small muted">Change a number in the list and it saves on its own.</p>
+        </div>
+        <button class="button buttonMain buttonSmall" type="button" onclick="openModal('addProductModal')">
+          Add a product
+        </button>
+      </div>
+
+      <div class="adminToolbar panel">
+        <input type="search" id="stockSearch" placeholder="Search by name">
+
+        <select id="categoryFilter">
+          <option value="all">All categories</option>
+          <option value="clothing">Clothing</option>
+          <option value="watches">Watches</option>
+          <option value="other">Other</option>
+        </select>
+
+        <select id="stockFilter">
+          <option value="all">Any stock level</option>
+          <option value="low">Low stock only</option>
+          <option value="out">Out of stock only</option>
+        </select>
+
+        <span class="small muted" id="stockCount"></span>
+      </div>
+
+      <div class="tableHolder">
+        <table>
+          <thead>
+            <tr>
+              <th>Product</th>
+              <th>Category</th>
+              <th>Size</th>
+              <th>Price</th>
+              <th>In stock</th>
+              <th>State</th>
+              <th></th>
+            </tr>
+          </thead>
+          <!-- adminInventory.js fills this using the stockRow component -->
+          <tbody id="stockRows"></tbody>
+        </table>
+      </div>
+
+      <p class="notice emptyNote" id="noRows" hidden>
+        No product matches that search. Clear the boxes above to see everything.
+      </p>
+
+      <p class="small muted legend">
+        A row turns pink when the stock is <span id="lowStockLevel"></span> or less, and grey when it reaches 0.
+      </p>
+    </main>
+  </div>
+
+  <div class="modal" id="editProductModal" role="dialog" aria-modal="true" aria-labelledby="editTitle">
+    <div class="modalBox">
+      <button class="modalClose" type="button" data-close aria-label="Close">&times;</button>
+      <h3 id="editTitle">Edit product</h3>
+      <p class="small muted" id="editProductName"></p>
+
+      <form id="editProductForm" novalidate>
+        <div class="field">
+          <label for="editPrice">Price in rupees</label>
+          <input type="number" id="editPrice" min="0" value="1250">
+          <span class="errorText">Enter a price of 0 or more.</span>
+        </div>
+
+        <div class="field">
+          <label for="editPhoto">New main photo (optional)</label>
+          <input type="file" id="editPhoto" accept="image/jpeg,image/png,image/webp">
+          <span class="hint">Leave empty to keep the current photo. Other photos are on the Pictures page.</span>
+          <span class="errorText" id="editPhotoError"></span>
+        </div>
+
+        <div class="field">
+          <label for="editDescription">Short description</label>
+          <textarea id="editDescription">Light cotton dress with a small floral print.</textarea>
+        </div>
+
+        <div class="field">
+          <label class="checkboxRow">
+            <input type="checkbox" id="editActive" checked>
+            <span>Show this product on the website</span>
+          </label>
+        </div>
+
+        <div class="modalActions">
+          <button class="button buttonMain" type="submit">Save changes</button>
+          <button class="button buttonPlain" type="button" data-close>Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="modal" id="addProductModal" role="dialog" aria-modal="true" aria-labelledby="addTitle">
+    <div class="modalBox">
+      <button class="modalClose" type="button" data-close aria-label="Close">&times;</button>
+      <h3 id="addTitle">Add a product</h3>
+
+      <form id="addProductForm" novalidate>
+        <div class="field">
+          <label for="newName">Name</label>
+          <input type="text" id="newName">
+          <span class="errorText">Give the product a name.</span>
+        </div>
+
+        <div class="field">
+          <label for="newCategory">Category</label>
+          <select id="newCategory">
+            <option value="clothing">Clothing</option>
+            <option value="watches">Watches</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="newPrice">Price in rupees</label>
+          <input type="number" id="newPrice" min="0">
+          <span class="errorText">Enter a price of 0 or more.</span>
+        </div>
+
+        <div class="field">
+          <label for="newPhoto">Main photo (optional)</label>
+          <input type="file" id="newPhoto" accept="image/jpeg,image/png,image/webp">
+          <span class="hint">JPG, PNG or WEBP. You can add it later on the Pictures page.</span>
+          <span class="errorText" id="newPhotoError"></span>
+        </div>
+
+        <div class="field">
+          <label for="newStock">Starting stock</label>
+          <input type="number" id="newStock" min="0" value="1">
+          <span class="errorText">Enter a stock number of 0 or more.</span>
+        </div>
+
+        <div class="modalActions">
+          <button class="button buttonMain" type="submit">Add product</button>
+          <button class="button buttonPlain" type="button" data-close>Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="../js/data/adminAccount.js"></script>
+  <script src="../js/data/adminSettings.js"></script>
+  <script src="../js/data/adminData.js"></script>
+  <script src="../js/modalPopup.js"></script>
+  <script src="../js/components/adminShell.js"></script>
+  <script src="../js/components/messageModal.js"></script>
+  <script src="../js/components/formField.js"></script>
+  <script src="../js/components/tableFilter.js"></script>
+  <script src="../js/components/statusTag.js"></script>
+  <script src="../js/components/stockRow.js"></script>
+  <script src="../js/adminInventory.js"></script>
+</body>
+</html>

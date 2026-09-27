@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Orders - Reshma Beauty Parlour admin</title>
+  <meta name="robots" content="noindex">
+
+  <link rel="stylesheet" href="../css/palette.css">
+  <link rel="stylesheet" href="../css/siteShell.css">
+  <link rel="stylesheet" href="../css/adminShell.css">
+  <link rel="stylesheet" href="../css/adminOrders.css">
+  <link rel="icon" href="../images/logoReshma.svg">
+</head>
+<body>
+
+  <header id="adminHeader"></header>
+
+  <div class="adminLayout">
+    <nav id="adminMenu" data-page="orders"></nav>
+
+    <main>
+      <div class="adminHead">
+        <div>
+          <h1>Orders</h1>
+          <p class="small muted">Check MCB Juice, then confirm or send the order back.</p>
+        </div>
+        <span class="countPill" id="pendingPill"></span>
+      </div>
+
+      <div class="adminToolbar panel">
+        <input type="search" id="orderSearch" placeholder="Search by code, name or phone">
+        <!-- adminOrders.js fills the choices from orderStatuses -->
+        <select id="statusFilter"></select>
+        <span class="small muted" id="orderCount"></span>
+      </div>
+
+      <div class="tableHolder">
+        <table>
+          <thead>
+            <tr>
+              <th>Code</th><th>Date</th><th>Client</th><th>Phone</th>
+              <th>Total</th><th>Status</th><th></th>
+            </tr>
+          </thead>
+          <!-- adminOrders.js fills this using the orderRow component -->
+          <tbody id="orderRows"></tbody>
+        </table>
+      </div>
+
+      <p class="notice emptyNote" id="noOrders" hidden>
+        No order matches that search. Clear the boxes above to see them all.
+      </p>
+    </main>
+  </div>
+
+  <div class="modal" id="orderModal" role="dialog" aria-modal="true" aria-labelledby="orderModalTitle">
+    <div class="modalBox modalBoxWide">
+      <button class="modalClose" type="button" data-close aria-label="Close">&times;</button>
+
+      <h3 id="orderModalTitle"></h3>
+      <p class="small muted" id="orderModalStatus"></p>
+
+      <div class="detailGrid">
+        <div><p class="small muted">Client</p><p id="orderModalClient"></p></div>
+        <div><p class="small muted">Phone</p><p id="orderModalPhone"></p></div>
+        <div><p class="small muted">Total</p><p id="orderModalTotal"></p></div>
+        <div><p class="small muted">Fulfilment</p><p id="orderModalFulfilment"></p></div>
+      </div>
+
+      <p class="small muted detailLabel">Items</p>
+      <p id="orderModalItems"></p>
+
+      <a class="button buttonSoft buttonSmall whatsappLink" id="orderModalWhatsapp" href="#">
+        Message the client on WhatsApp
+      </a>
+
+      <form class="statusForm" id="statusForm" novalidate>
+        <div class="field">
+          <label for="newStatus">Move this order to</label>
+          <select id="newStatus">
+            <option value="confirmed">Payment confirmed</option>
+            <option value="awaitingPayment">Awaiting payment (payment not found)</option>
+            <option value="ready">Ready</option>
+            <option value="completed">Completed</option>
+            <option value="cancelled">Cancelled</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="statusMessage">Message to the client</label>
+          <textarea id="statusMessage" placeholder="Shown on the client's status page"></textarea>
+          <span class="hint" id="messageHint">Optional for most changes.</span>
+          <span class="errorText">A message is required when cancelling or when the payment was not found.</span>
+        </div>
+
+        <div class="modalActions">
+          <button class="button buttonMain" type="submit">Save status</button>
+          <button class="button buttonPlain" type="button" data-close>Close</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="../js/data/adminAccount.js"></script>
+  <script src="../js/data/adminSettings.js"></script>
+  <script src="../js/data/adminData.js"></script>
+  <script src="../js/modalPopup.js"></script>
+  <script src="../js/components/adminShell.js"></script>
+  <script src="../js/components/messageModal.js"></script>
+  <script src="../js/components/formField.js"></script>
+  <script src="../js/components/tableFilter.js"></script>
+  <script src="../js/components/statusTag.js"></script>
+  <script src="../js/components/orderRow.js"></script>
+  <script src="../js/adminOrders.js"></script>
+</body>
+</html>

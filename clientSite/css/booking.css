@@ -1,0 +1,56 @@
+.bookingLayout {
+  display: grid;
+  grid-template-columns: 1fr 300px;
+  gap: var(--spaceMd);
+  align-items: start;
+}
+
+.bookingLayout form h3 { margin-bottom: var(--spaceMd); }
+.bookingLayout form .button { margin-top: var(--spaceMd); }
+
+.formSectionTitle {
+  margin-top: var(--spaceLg);
+  padding-top: var(--spaceMd);
+  border-top: 1px solid var(--colourLine);
+}
+
+#negotiableNotice { margin-bottom: var(--spaceMd); }
+
+.bookingAside { position: sticky; top: 92px; }
+.bookingAside h3 { margin-bottom: var(--spaceSm); }
+.bookingAside .button { margin-top: var(--spaceSm); }
+
+.asideTitle {
+  margin-top: var(--spaceLg);
+  padding-top: var(--spaceMd);
+  border-top: 1px solid var(--colourLine);
+}
+
+.asideList { list-style: none; margin-bottom: var(--spaceSm); }
+
+.asideList li {
+  position: relative;
+  padding-left: 18px;
+  margin-bottom: 8px;
+  color: var(--colourInkSoft);
+}
+
+.asideList li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 9px;
+  width: 8px;
+  height: 8px;
+  border-radius: var(--radiusRound);
+  background-color: var(--colourRose);
+}
+
+/* The recap inside the success pop-up */
+.bookingRecap { background-color: #F8F1FA; border: none; margin-bottom: var(--spaceMd); }
+.bookingRecap div { display: flex; justify-content: space-between; gap: var(--spaceSm); padding: 4px 0; }
+
+@media (max-width: 900px) {
+  .bookingLayout { grid-template-columns: 1fr; }
+  .bookingAside { position: static; }
+}

@@ -1,0 +1,58 @@
+/* ==========================================================================
+   The chips themselves live in siteShell.css, because the shop uses them too.
+   ========================================================================== */
+
+.filterBar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spaceLg);
+  margin-bottom: var(--spaceMd);
+}
+
+.filterLabel {
+  display: block;
+  margin-bottom: var(--spaceXs);
+  font-size: 13px;
+  color: var(--colourInkSoft);
+}
+
+.serviceGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: var(--spaceMd);
+  margin-top: var(--spaceSm);
+  margin-bottom: var(--spaceMd);
+}
+
+.serviceCard .cardPicture { height: 200px; }
+.serviceCard h3 { margin: var(--spaceXs) 0; }
+.serviceCard .price { margin-bottom: var(--spaceSm); }
+
+.serviceMeta {
+  list-style: none;
+  margin: var(--spaceSm) 0;
+  color: var(--colourInkSoft);
+}
+
+.serviceMeta li { position: relative; padding-left: 16px; }
+
+/* A small dot in front of each line, drawn in CSS */
+.serviceMeta li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 10px;
+  width: 6px;
+  height: 6px;
+  border-radius: var(--radiusRound);
+  background-color: var(--colourRose);
+}
+
+/* A card hidden by the filters. hidden alone is not always enough
+   inside a grid, so display is set directly. */
+.serviceCard[hidden] { display: none; }
+
+@media (max-width: 480px) {
+  .filterBar { gap: var(--spaceMd); }
+  .serviceCard .cardPicture { height: 170px; }
+}

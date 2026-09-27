@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Shop - Reshma Beauty Parlour</title>
+  <meta name="description" content="Clothing, watches and accessories sold at Reshma Beauty Parlour.">
+
+  <link rel="stylesheet" href="../css/palette.css">
+  <link rel="stylesheet" href="../css/siteShell.css">
+  <link rel="stylesheet" href="../css/shop.css">
+  <link rel="icon" href="../images/logoReshma.svg">
+</head>
+<body data-root="../">
+
+  <div id="siteHeader" data-page="shop"></div>
+
+  <main class="wrap section">
+
+    <div class="sectionHead">
+      <h1>Shop</h1>
+      <p>Everything here is kept at the salon. Order online, pay with Juice, collect or have it delivered.</p>
+    </div>
+
+    <div class="shopToolbar panel">
+      <!-- shop.js fills this using the filterChips component -->
+      <div class="choiceRow" id="categoryChips"></div>
+
+      <div class="sortBox">
+        <label for="sortSelect">Sort by</label>
+        <select id="sortSelect">
+          <option value="newest">Newest first</option>
+          <option value="priceLow">Price: low to high</option>
+          <option value="priceHigh">Price: high to low</option>
+        </select>
+      </div>
+    </div>
+
+    <p class="small muted" id="productCount"></p>
+
+    <!-- shop.js fills this using the productCard component -->
+    <div class="productGrid" id="productGrid"></div>
+
+    <p class="notice" id="emptyCategory" hidden>
+      Nothing in this category yet. Choose "All" to see the whole shop.
+    </p>
+
+  </main>
+
+  <footer id="siteFooter"></footer>
+
+  <script src="../js/data/businessInfo.js"></script>
+  <script src="../js/data/siteImages.js"></script>
+  <script src="../js/data/cartItems.js"></script>
+  <script src="../js/data/products.js"></script>
+  <script src="../js/modalPopup.js"></script>
+  <script src="../js/components/picture.js"></script>
+  <script src="../js/components/contactLinks.js"></script>
+  <script src="../js/components/siteHeader.js"></script>
+  <script src="../js/components/siteFooter.js"></script>
+  <script src="../js/components/messageModal.js"></script>
+  <script src="../js/components/filterChips.js"></script>
+  <script src="../js/components/productCard.js"></script>
+  <script src="../js/shop.js"></script>
+</body>
+</html>

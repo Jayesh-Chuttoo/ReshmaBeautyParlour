@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Pay for your order - Reshma Beauty Parlour</title>
+
+  <link rel="stylesheet" href="../css/palette.css">
+  <link rel="stylesheet" href="../css/siteShell.css">
+  <link rel="stylesheet" href="../css/payment.css">
+  <link rel="icon" href="../images/logoReshma.svg">
+</head>
+<body data-root="../">
+
+  <div id="siteHeader" data-page="track"></div>
+
+  <main class="wrap section">
+
+    <div class="sectionHead">
+      <h1>Pay for your order</h1>
+      <p>Step 2 of 2. Your items are held for you until the time shown below.</p>
+    </div>
+
+    <div class="paymentLayout">
+
+      <div>
+        <div class="panel codePanel">
+          <p class="small muted">Purchase code</p>
+          <div class="copyRow">
+            <span class="bigCode" id="purchaseCode"></span>
+            <button class="button buttonSmall buttonPlain" type="button" id="copyCodeButton">Copy</button>
+          </div>
+
+          <p class="small muted copyLabel">Amount to send</p>
+          <div class="copyRow">
+            <span class="bigAmount" id="orderAmount"></span>
+            <button class="button buttonSmall buttonPlain" type="button" id="copyAmountButton">Copy</button>
+          </div>
+
+          <p class="small muted copyLabel">MCB Juice number</p>
+          <div class="copyRow">
+            <span class="bigNumber" id="juiceNumber"></span>
+            <button class="button buttonSmall buttonPlain" type="button" id="copyJuiceButton">Copy</button>
+          </div>
+          <p class="small muted" id="juiceAccount"></p>
+
+          <div class="notice noticeWarn expiryNotice">
+            Pay before <strong id="payBefore"></strong>. After that the items go back on sale.
+          </div>
+        </div>
+
+        <!-- Numbered because this genuinely is a sequence -->
+        <ol class="paySteps">
+          <li>
+            <h3>Open MCB Juice</h3>
+            <p class="small">Send exactly the amount above to the Juice number above.</p>
+          </li>
+          <li>
+            <h3>Put the code as reference</h3>
+            <p class="small">Use <strong class="codeCopy"></strong> so we can match the payment to your order.</p>
+          </li>
+          <li>
+            <h3>Send us the screenshot</h3>
+            <p class="small">The button below opens WhatsApp with the code already written.</p>
+            <a class="button buttonSoft" id="screenshotButton" href="#">Send screenshot on WhatsApp</a>
+          </li>
+          <li>
+            <h3>Tell us you have paid</h3>
+            <p class="small">Tap the button below. We then check Juice and confirm the order.</p>
+
+            <button class="button buttonMain" type="button" id="paidButton">I have paid</button>
+
+            <div class="notice noticeGood" id="paidMessage" hidden>
+              Thank you. We are checking your payment now. The status changes to
+              "Payment confirmed" once we find it, usually within a few hours.
+            </div>
+          </li>
+        </ol>
+      </div>
+
+      <aside class="panel paymentSummary">
+        <h3>What you ordered</h3>
+
+        <!-- payment.js fills these from the order, using orderLines.js
+             and statusTag.js -->
+        <div class="summaryLines" id="paymentLines"></div>
+
+        <div class="statusLine" id="statusLine"></div>
+
+        <a class="button buttonPlain buttonWide" href="track.html">Open this order later</a>
+        <p class="small muted">
+          Keep your purchase code. With the code and your mobile number you can
+          check the status at any time.
+        </p>
+      </aside>
+
+    </div>
+  </main>
+
+  <footer id="siteFooter"></footer>
+
+  <script src="../js/data/businessInfo.js"></script>
+  <script src="../js/data/siteImages.js"></script>
+  <script src="../js/data/cartItems.js"></script>
+  <script src="../js/data/statusLabels.js"></script>
+  <script src="../js/data/orderExamples.js"></script>
+  <script src="../js/modalPopup.js"></script>
+  <script src="../js/components/picture.js"></script>
+  <script src="../js/components/contactLinks.js"></script>
+  <script src="../js/components/siteHeader.js"></script>
+  <script src="../js/components/siteFooter.js"></script>
+  <script src="../js/components/messageModal.js"></script>
+  <script src="../js/components/orderLines.js"></script>
+  <script src="../js/components/statusTag.js"></script>
+  <script src="../js/payment.js"></script>
+</body>
+</html>

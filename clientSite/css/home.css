@@ -1,0 +1,110 @@
+.hero {
+  background: linear-gradient(160deg, var(--colourBlush) 0%, var(--colourSky) 100%);
+  border-bottom: 1px solid var(--colourLine);
+}
+
+.heroInner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  gap: var(--spaceXl);
+  padding-top: var(--spaceXl);
+  padding-bottom: var(--spaceXl);
+}
+
+.heroKicker {
+  font-size: 14px;
+  letter-spacing: 1px;
+  color: var(--colourInkSoft);
+  margin-bottom: var(--spaceSm);
+}
+
+.heroText h1 { margin-bottom: var(--spaceMd); }
+
+.heroButtons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spaceSm);
+  margin-top: var(--spaceLg);
+}
+
+.heroNote { margin-top: var(--spaceMd); }
+
+.heroImage .picture {
+  aspect-ratio: 5 / 4;
+  border-radius: var(--radiusLarge);
+  border: 6px solid var(--colourCard);
+}
+
+/* The card grid used twice on this page.
+   auto-fit with a minimum width means the browser decides how many fit,
+   so no media query is needed for it. */
+.cardGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: var(--spaceMd);
+}
+
+.cardGrid .cardBody h3 { margin: var(--spaceXs) 0; }
+.cardGrid .cardBody .button { margin-top: var(--spaceSm); }
+
+/* The numbered band */
+.stepsBand {
+  background-color: #F8F1FA;
+  padding-top: var(--spaceXl);
+  padding-bottom: var(--spaceXl);
+}
+
+.stepsList {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--spaceMd);
+  list-style: none;
+}
+
+.stepsList li {
+  background-color: var(--colourCard);
+  border: 1px solid var(--colourLine);
+  border-radius: var(--radiusLarge);
+  padding: var(--spaceMd);
+}
+
+.stepNumber {
+  display: inline-block;
+  width: 34px;
+  height: 34px;
+  margin-bottom: var(--spaceSm);
+  background-color: var(--colourLilac);
+  border-radius: var(--radiusRound);
+  font-family: var(--fontHeading);
+  font-size: 17px;
+  line-height: 34px;
+  text-align: center;
+}
+
+.stepsList h4 { margin-bottom: 4px; }
+
+.contactBand {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--spaceMd);
+  padding: var(--spaceLg);
+  background-color: var(--colourSky);
+  border-radius: var(--radiusLarge);
+}
+
+@media (max-width: 900px) {
+  .stepsList { grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 768px) {
+  .heroInner { grid-template-columns: 1fr; gap: var(--spaceLg); }
+  .heroImage { order: -1; }     /* picture first on a phone */
+}
+
+@media (max-width: 480px) {
+  .stepsList { grid-template-columns: 1fr; }
+  .contactBand { padding: var(--spaceMd); }
+}

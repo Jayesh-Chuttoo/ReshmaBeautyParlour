@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sign-in details - Reshma Beauty Parlour admin</title>
+  <meta name="robots" content="noindex">
+
+  <link rel="stylesheet" href="../css/palette.css">
+  <link rel="stylesheet" href="../css/siteShell.css">
+  <link rel="stylesheet" href="../css/adminShell.css">
+  <link rel="stylesheet" href="../css/adminAccount.css">
+  <link rel="icon" href="../images/logoReshma.svg">
+</head>
+<body>
+
+  <header id="adminHeader"></header>
+
+  <div class="adminLayout">
+    <nav id="adminMenu" data-page="account"></nav>
+
+    <main>
+      <div class="adminHead">
+        <div>
+          <h1>Sign-in details</h1>
+          <p class="small muted">Change the email and the password used to open this admin site.</p>
+        </div>
+      </div>
+
+      <div class="accountGrid">
+
+        <form class="panel" id="emailForm" novalidate>
+          <h3>Email</h3>
+          <p class="small muted">Signed in now as <strong id="currentEmail"></strong></p>
+
+          <div class="field">
+            <label for="newEmail">New email</label>
+            <input type="email" id="newEmail" autocomplete="username">
+            <span class="errorText">Enter a full email address, like name@example.com.</span>
+          </div>
+
+          <div class="field">
+            <label for="emailPassword">Your current password</label>
+            <input type="password" id="emailPassword" maxlength="8" autocomplete="current-password">
+            <span class="errorText">This is not the current password.</span>
+          </div>
+
+          <button class="button buttonMain" type="submit">Change email</button>
+        </form>
+
+        <form class="panel" id="passwordForm" novalidate>
+          <h3>Password</h3>
+
+          <div class="field">
+            <label for="currentPassword">Current password</label>
+            <input type="password" id="currentPassword" maxlength="8" autocomplete="current-password">
+            <span class="errorText">This is not the current password.</span>
+          </div>
+
+          <div class="field">
+            <label for="newPassword">New password</label>
+            <input type="password" id="newPassword" maxlength="8" autocomplete="new-password"
+                   aria-describedby="passwordChecklist">
+            <!-- passwordRules.js fills this and ticks each rule while typing -->
+            <ul class="passwordChecklist small" id="passwordChecklist"></ul>
+            <span class="errorText">The new password does not follow every rule above.</span>
+          </div>
+
+          <div class="field">
+            <label for="repeatPassword">New password again</label>
+            <input type="password" id="repeatPassword" maxlength="8" autocomplete="new-password">
+            <span class="errorText">The two new passwords are not the same.</span>
+          </div>
+
+          <label class="checkboxRow showPasswords">
+            <input type="checkbox" id="showPasswords">
+            <span>Show passwords</span>
+          </label>
+
+          <button class="button buttonMain" type="submit">Change password</button>
+        </form>
+
+      </div>
+    </main>
+  </div>
+
+  <script src="../js/data/adminAccount.js"></script>
+  <script src="../js/data/adminSettings.js"></script>
+  <script src="../js/modalPopup.js"></script>
+  <script src="../js/components/adminShell.js"></script>
+  <script src="../js/components/messageModal.js"></script>
+  <script src="../js/components/formField.js"></script>
+  <script src="../js/components/passwordRules.js"></script>
+  <script src="../js/adminAccount.js"></script>
+</body>
+</html>

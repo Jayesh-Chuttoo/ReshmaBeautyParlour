@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Request a booking - Reshma Beauty Parlour</title>
+
+  <link rel="stylesheet" href="../css/palette.css">
+  <link rel="stylesheet" href="../css/siteShell.css">
+  <link rel="stylesheet" href="../css/booking.css">
+  <link rel="icon" href="../images/logoReshma.svg">
+</head>
+<body data-root="../">
+
+  <div id="siteHeader" data-page="services"></div>
+
+  <main class="wrap section">
+
+    <div class="sectionHead">
+      <h1>Request a booking</h1>
+      <p>This is a request, not a fixed appointment. We reply on WhatsApp to agree the time.</p>
+    </div>
+
+    <div class="bookingLayout">
+
+      <form class="panel" id="bookingForm" novalidate>
+
+        <h3>What would you like?</h3>
+
+        <div class="field">
+          <label for="service">Service</label>
+          <!-- booking.js fills the choices from the same services list the
+               services page uses, so the two can never disagree -->
+          <select id="service" name="service"></select>
+          <span class="errorText">Please choose a service.</span>
+        </div>
+
+        <div class="notice" id="negotiableNotice" hidden>
+          This service is priced after we talk. Describe what you would like in
+          the notes at the bottom and we will send you a price on WhatsApp.
+        </div>
+
+        <div class="field">
+          <span class="fieldTitle">Where</span>
+          <div class="choiceRow">
+            <label class="choice">
+              <input type="radio" name="place" value="onsite" checked>
+              At the salon
+            </label>
+            <label class="choice">
+              <input type="radio" name="place" value="offsite">
+              At my place
+            </label>
+          </div>
+        </div>
+
+        <div class="field" id="placeAddressField" hidden>
+          <label for="placeAddress">Your address</label>
+          <textarea id="placeAddress" name="placeAddress" placeholder="Street, town, any landmark"></textarea>
+          <span class="errorText">We need the address to come to you.</span>
+        </div>
+
+        <h3 class="formSectionTitle">When suits you?</h3>
+
+        <div class="twoColumns">
+          <div class="field">
+            <label for="firstDate">Preferred date</label>
+            <input type="date" id="firstDate" name="firstDate">
+            <span class="errorText">Choose a date from tomorrow onwards.</span>
+          </div>
+
+          <div class="field">
+            <label for="firstTime">Preferred time</label>
+            <select id="firstTime" name="firstTime">
+              <option value="">Choose a time</option>
+              <option value="09:00">09:00</option>
+              <option value="10:00">10:00</option>
+              <option value="11:00">11:00</option>
+              <option value="12:00">12:00</option>
+              <option value="13:00">13:00</option>
+              <option value="14:00">14:00</option>
+              <option value="15:00">15:00</option>
+              <option value="16:00">16:00</option>
+              <option value="17:00">17:00</option>
+            </select>
+            <span class="errorText">Choose a time.</span>
+          </div>
+        </div>
+
+        <div class="twoColumns">
+          <div class="field">
+            <label for="secondDate">Second choice date (optional)</label>
+            <input type="date" id="secondDate" name="secondDate">
+          </div>
+
+          <div class="field">
+            <label for="secondTime">Second choice time (optional)</label>
+            <select id="secondTime" name="secondTime">
+              <option value="">No second choice</option>
+              <option value="09:00">09:00</option>
+              <option value="11:00">11:00</option>
+              <option value="13:00">13:00</option>
+              <option value="15:00">15:00</option>
+              <option value="17:00">17:00</option>
+            </select>
+          </div>
+        </div>
+
+        <h3 class="formSectionTitle">How do we reach you?</h3>
+
+        <div class="field">
+          <label for="bookingName">Full name</label>
+          <input type="text" id="bookingName" name="fullName" autocomplete="name">
+          <span class="errorText">Please enter your name.</span>
+        </div>
+
+        <div class="field">
+          <label for="bookingMobile">Mobile number</label>
+          <input type="tel" id="bookingMobile" name="mobile" placeholder="5xxx xxxx" autocomplete="tel">
+          <span class="errorText">Enter a Mauritian mobile number, 8 digits starting with 5.</span>
+        </div>
+
+        <div class="field">
+          <label for="bookingEmail">Email (optional)</label>
+          <input type="email" id="bookingEmail" name="email" autocomplete="email">
+          <span class="errorText">That email address does not look right.</span>
+        </div>
+
+        <div class="field">
+          <label for="bookingNotes">Notes</label>
+          <textarea id="bookingNotes" name="notes" placeholder="Hair length, the look you want, allergies, anything useful"></textarea>
+        </div>
+
+        <button class="button buttonMain buttonWide" type="submit">Send booking request</button>
+      </form>
+
+      <aside class="panel bookingAside">
+        <h3>Good to know</h3>
+        <ul class="asideList small">
+          <li>Bookings can be requested from tomorrow up to 60 days ahead.</li>
+          <li>We are open <span id="openingSummary"></span>.</li>
+          <li>Nothing is paid to request a booking.</li>
+          <li>For home visits we cover Curepipe, Vacoas, Quatre Bornes and Floreal.</li>
+        </ul>
+
+        <h3 class="asideTitle">Changed your mind?</h3>
+        <p class="small">Message us on WhatsApp with your booking code and we will cancel it.</p>
+        <a class="button buttonSoft buttonWide" id="cancelWhatsapp" href="#">Open WhatsApp</a>
+      </aside>
+
+    </div>
+  </main>
+
+  <footer id="siteFooter"></footer>
+
+  <div class="modal" id="bookingSentModal" role="dialog" aria-modal="true" aria-labelledby="sentTitle">
+    <div class="modalBox">
+      <button class="modalClose" type="button" data-close aria-label="Close">&times;</button>
+      <h3 id="sentTitle">Request received</h3>
+      <p>Your booking code is <strong id="bookingCode"></strong>. Keep it to check the status later.</p>
+
+      <div class="panel bookingRecap small" id="bookingRecap"></div>
+
+      <p class="small muted">We will message you on WhatsApp to confirm the time.</p>
+
+      <div class="modalActions">
+        <a class="button buttonMain" id="bookingWhatsapp" href="#">Message us now</a>
+        <a class="button buttonPlain" href="track.html">Track this booking</a>
+      </div>
+    </div>
+  </div>
+
+  <script src="../js/data/businessInfo.js"></script>
+  <script src="../js/data/siteImages.js"></script>
+  <script src="../js/data/cartItems.js"></script>
+  <script src="../js/data/services.js"></script>
+  <script src="../js/modalPopup.js"></script>
+  <script src="../js/components/picture.js"></script>
+  <script src="../js/components/contactLinks.js"></script>
+  <script src="../js/components/siteHeader.js"></script>
+  <script src="../js/components/siteFooter.js"></script>
+  <script src="../js/components/messageModal.js"></script>
+  <script src="../js/components/formField.js"></script>
+  <script src="../js/booking.js"></script>
+</body>
+</html>

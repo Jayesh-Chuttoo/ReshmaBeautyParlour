@@ -1,0 +1,50 @@
+.lookupForm { margin-bottom: var(--spaceMd); }
+
+.resultPanel { margin-bottom: var(--spaceMd); }
+
+.resultHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spaceMd);
+  flex-wrap: wrap;
+  padding-bottom: var(--spaceMd);
+  margin-bottom: var(--spaceMd);
+  border-bottom: 1px solid var(--colourLine);
+}
+
+.resultHead h2 { font-size: 28px; }
+
+.resultSubtitle { margin-top: var(--spaceLg); margin-bottom: var(--spaceSm); }
+
+.resultNote { margin: var(--spaceMd) 0; }
+
+/* The status timeline: a dot per step on a vertical line */
+.timeline { list-style: none; margin-top: var(--spaceLg); padding-left: 0; }
+
+.timeline li {
+  position: relative;
+  padding: 0 0 var(--spaceMd) 34px;
+  border-left: 2px solid var(--colourLine);
+  margin-left: 8px;
+}
+
+.timeline li:last-child { border-left-color: transparent; padding-bottom: 0; }
+
+.timeline li::before {
+  content: "";
+  position: absolute;
+  left: -9px;
+  top: 4px;
+  width: 16px;
+  height: 16px;
+  border-radius: var(--radiusRound);
+  background-color: var(--colourCard);
+  border: 2px solid var(--colourLilac);
+}
+
+/* A step that has already happened */
+.timeline li.isDone::before { background-color: var(--colourRose); border-color: var(--colourRose); }
+.timeline li.isDone { border-left-color: var(--colourRose); }
+
+.timeline h4 { margin-bottom: 2px; }

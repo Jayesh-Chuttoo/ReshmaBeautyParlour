@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <!-- This line makes the page scale correctly on phones. Never leave it out. -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Reshma Beauty Parlour</title>
+  <meta name="description" content="Hair and nail appointments at the salon or at your place, plus clothing and watches, from Reshma Beauty Parlour.">
+
+  <link rel="stylesheet" href="css/palette.css">
+  <link rel="stylesheet" href="css/siteShell.css">
+  <link rel="stylesheet" href="css/home.css">
+  <link rel="icon" href="images/logoReshma.svg">
+</head>
+<!-- data-root tells the components where the top of the site is.
+     It is empty here because this file sits at the top of clientSite. -->
+<body data-root="">
+
+  <!-- The header component fills this in. -->
+  <div id="siteHeader" data-page="home"></div>
+
+  <main>
+
+    <section class="hero">
+      <div class="wrap heroInner">
+        <div class="heroText">
+          <p class="heroKicker">Petit Raffray, Mauritius</p>
+          <h1>Your hair, your nails, your wardrobe &mdash; in one place.</h1>
+          <p>
+            Book a hair or nail appointment at the salon or at your home, and shop
+            through the selection we keep in store. Pay with MCB Juice after we
+            confirm &mdash; no card details are ever asked for on this website.
+          </p>
+          <div class="heroButtons">
+            <a class="button buttonMain" href="pages/booking.html">Request a booking</a>
+            <a class="button buttonPlain" href="pages/shop.html">Browse the shop</a>
+          </div>
+          <p class="small muted heroNote">Open Tuesday to Sunday &middot; WhatsApp replies within the day</p>
+        </div>
+
+        <!-- picture.js fills this with siteImages.homeBanner -->
+        <div class="heroImage" data-picture="homeBanner" data-alt="Reshma Beauty Parlour"></div>
+      </div>
+    </section>
+
+    <section class="section wrap">
+      <div class="sectionHead">
+        <h2>What we do</h2>
+        <p>Three groups of services. Every one of them can be done at the salon, and most can come to you.</p>
+      </div>
+
+      <!-- home.js fills this with one categoryCard per service group -->
+      <div class="cardGrid" id="categoryCards"></div>
+    </section>
+
+    <!-- This really is a sequence, so the steps are numbered. -->
+    <section class="stepsBand">
+      <div class="wrap">
+        <div class="sectionHead">
+          <h2>How paying works</h2>
+          <p>The website never touches your money. It gives you a code, and you pay with MCB Juice.</p>
+        </div>
+
+        <ol class="stepsList">
+          <li>
+            <span class="stepNumber">1</span>
+            <h4>Place the order</h4>
+            <p class="small">You get a purchase code like ORD-7KQ2M9 and the exact amount to send.</p>
+          </li>
+          <li>
+            <span class="stepNumber">2</span>
+            <h4>Send the money on Juice</h4>
+            <p class="small">Transfer the total to our Juice number, using the code as the reference.</p>
+          </li>
+          <li>
+            <span class="stepNumber">3</span>
+            <h4>Send the screenshot</h4>
+            <p class="small">One button opens WhatsApp with your code already typed in.</p>
+          </li>
+          <li>
+            <span class="stepNumber">4</span>
+            <h4>We confirm</h4>
+            <p class="small">Once we see the payment, your order status changes and we prepare it.</p>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="section wrap">
+      <div class="sectionHead sectionHeadRow">
+        <div>
+          <h2>New in the boutique</h2>
+          <p>Clothing and watches, kept in the salon and ready for pickup.</p>
+        </div>
+        <a class="button buttonPlain buttonSmall" href="pages/shop.html">See everything</a>
+      </div>
+
+      <!-- home.js fills this with product cards from the same component
+           the shop page uses. -->
+      <div class="cardGrid" id="newProducts"></div>
+    </section>
+
+    <section class="section wrap">
+      <div class="contactBand">
+        <div>
+          <h2>Not sure what you need?</h2>
+          <p>Tell us what you are looking for and we will suggest a service and a price.</p>
+        </div>
+        <button class="button buttonMain" type="button" onclick="openModal('questionModal')">
+          Ask a question
+        </button>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- The footer component fills this in. -->
+  <footer id="siteFooter"></footer>
+
+  <!-- A pop-up written by hand, because it holds a form of its own.
+       The plain message and confirm pop-ups come from messageModal.js. -->
+  <div class="modal" id="questionModal" role="dialog" aria-modal="true" aria-labelledby="questionTitle">
+    <div class="modalBox">
+      <button class="modalClose" type="button" data-close aria-label="Close">&times;</button>
+      <h3 id="questionTitle">Ask us a question</h3>
+      <p class="small muted">We answer on WhatsApp, usually the same day.</p>
+
+      <form id="questionForm" novalidate>
+        <div class="field">
+          <label for="questionName">Your name</label>
+          <input type="text" id="questionName" name="name">
+          <span class="errorText">Please enter your name.</span>
+        </div>
+
+        <div class="field">
+          <label for="questionMessage">What would you like to know?</label>
+          <textarea id="questionMessage" name="message"></textarea>
+          <span class="errorText">Please write your question.</span>
+        </div>
+
+        <button class="button buttonMain buttonWide" type="submit">Send question</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Data first, then the shared helper, then components, then this page. -->
+  <script src="js/data/businessInfo.js"></script>
+  <script src="js/data/siteImages.js"></script>
+  <script src="js/data/cartItems.js"></script>
+  <script src="js/data/services.js"></script>
+  <script src="js/data/products.js"></script>
+  <script src="js/modalPopup.js"></script>
+  <script src="js/components/picture.js"></script>
+  <script src="js/components/contactLinks.js"></script>
+  <script src="js/components/siteHeader.js"></script>
+  <script src="js/components/siteFooter.js"></script>
+  <script src="js/components/messageModal.js"></script>
+  <script src="js/components/formField.js"></script>
+  <script src="js/components/categoryCard.js"></script>
+  <script src="js/components/productCard.js"></script>
+  <script src="js/home.js"></script>
+</body>
+</html>

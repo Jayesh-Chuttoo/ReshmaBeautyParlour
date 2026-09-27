@@ -1,0 +1,61 @@
+.cartNotice { margin-bottom: var(--spaceMd); }
+
+/* Item list on the left, summary on the right.
+   The summary sticks while the list scrolls. */
+.cartLayout {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: var(--spaceMd);
+  align-items: start;
+}
+
+/* One line: photo | details | quantity and total */
+.cartLine {
+  display: grid;
+  grid-template-columns: 96px 1fr 140px;
+  gap: var(--spaceMd);
+  align-items: center;
+  margin-bottom: var(--spaceSm);
+}
+
+.cartLinePicture { width: 96px; height: 110px; border-radius: var(--radiusSmall); }
+
+.cartLineInfo h3 { font-size: 19px; margin-bottom: 2px; }
+.cartLineInfo .linkButton { margin-top: var(--spaceXs); }
+
+.cartLineRight { text-align: right; }
+.cartLineRight label { display: block; margin-bottom: 4px; }
+.cartLineRight select { width: 90px; margin-left: auto; }
+
+.lineTotal { margin-top: var(--spaceSm); }
+
+.cartSummary { position: sticky; top: 92px; }
+.cartSummary h3 { margin-bottom: var(--spaceMd); }
+
+.cartSummary .button { margin-top: var(--spaceSm); }
+.cartKeepShopping { margin-bottom: var(--spaceSm); }
+
+#emptyCart { padding: var(--spaceXl) var(--spaceMd); }
+#emptyCart .button { margin-top: var(--spaceMd); }
+
+@media (max-width: 900px) {
+  .cartLayout { grid-template-columns: 1fr; }
+  .cartSummary { position: static; }
+}
+
+@media (max-width: 480px) {
+  /* The quantity and total move onto their own row */
+  .cartLine { grid-template-columns: 80px 1fr; }
+  .cartLinePicture { width: 80px; height: 90px; }
+
+  .cartLineRight {
+    grid-column: 1 / -1;          /* take the full width */
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    text-align: left;
+  }
+  .cartLineRight label { display: none; }
+  .cartLineRight select { margin-left: 0; }
+  .lineTotal { margin-top: 0; }
+}

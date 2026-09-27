@@ -1,0 +1,419 @@
+/* ==========================================================================
+   Styles for every repeated piece: header, navigation, footer, buttons,
+   cards, form fields, filter chips and the pop-up box.
+   These are the styles the components in js/components/ rely on.
+   Load after palette.css, before the page's own stylesheet.
+   ========================================================================== */
+
+/* ---------- 1. Page container ---------- */
+.wrap {
+  width: 100%;
+  max-width: var(--pageWidth);
+  margin: 0 auto;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.section { padding-top: var(--spaceXl); padding-bottom: var(--spaceXl); }
+
+.sectionHead { margin-bottom: var(--spaceLg); }
+.sectionHead p { color: var(--colourInkSoft); margin-top: var(--spaceXs); }
+
+.sectionHeadRow {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--spaceMd);
+  flex-wrap: wrap;
+}
+
+/* ---------- 2. Header and navigation (built by siteHeader.js) ---------- */
+.siteHeader {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background-color: var(--colourCard);
+  border-bottom: 1px solid var(--colourLine);
+}
+
+.headerInner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spaceMd);
+  height: 72px;
+}
+
+.brand { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+.brandLogo { width: 40px; height: 40px; flex-shrink: 0; border-radius: var(--radiusRound); }
+
+.brandName { font-family: var(--fontHeading); font-size: 20px; line-height: 22px; }
+
+.brandTag {
+  display: block;
+  font-family: var(--fontBody);
+  font-size: 11px;
+  letter-spacing: 1px;
+  color: var(--colourInkSoft);
+}
+
+.siteNav ul {
+  display: flex;
+  align-items: center;
+  gap: var(--spaceMd);
+  list-style: none;
+}
+
+.siteNav a {
+  text-decoration: none;
+  font-size: 15px;
+  padding: 6px 2px;
+  border-bottom: 2px solid transparent;
+}
+
+.siteNav a:hover { border-bottom-color: var(--colourRose); }
+.siteNav a.isCurrent { border-bottom-color: var(--colourLilac); }
+
+.cartCount {
+  display: inline-block;
+  min-width: 22px;
+  padding: 0 6px;
+  margin-left: 4px;
+  background-color: var(--colourRose);
+  border-radius: var(--radiusRound);
+  font-size: 12px;
+  line-height: 22px;
+  text-align: center;
+}
+
+.menuButton {
+  display: none;              /* only appears on small screens */
+  width: 44px;
+  height: 44px;
+  border: 1px solid var(--colourLine);
+  border-radius: var(--radiusSmall);
+  background-color: var(--colourCard);
+  font-size: 20px;
+  cursor: pointer;
+}
+
+/* ---------- 3. Buttons ---------- */
+.button {
+  display: inline-block;
+  padding: 12px 22px;
+  border: 1px solid transparent;
+  border-radius: var(--radiusRound);
+  font-family: var(--fontBody);
+  font-size: 15px;
+  line-height: 20px;
+  text-decoration: none;
+  text-align: center;
+  cursor: pointer;
+  transition: transform 120ms ease, background-color 120ms ease;
+}
+
+.button:active { transform: translateY(1px); }
+
+.buttonMain { background-color: var(--colourRose); color: var(--colourInk); }
+.buttonMain:hover { background-color: var(--colourBlush); }
+
+.buttonSoft { background-color: var(--colourSky); color: var(--colourInk); }
+.buttonSoft:hover { background-color: var(--colourAzure); }
+
+.buttonPlain {
+  background-color: transparent;
+  border-color: var(--colourLilac);
+  color: var(--colourInk);
+}
+.buttonPlain:hover { background-color: #F7EEF8; }
+
+.buttonSmall { padding: 8px 14px; font-size: 14px; }
+.buttonWide { width: 100%; }
+
+button[disabled], .button[disabled] { opacity: 0.45; cursor: not-allowed; }
+
+/* A button that looks like a text link */
+.linkButton {
+  padding: 0;
+  border: none;
+  background: none;
+  font-family: var(--fontBody);
+  font-size: 14px;
+  color: var(--colourInkSoft);
+  text-decoration: underline;
+  text-decoration-color: var(--colourRose);
+  cursor: pointer;
+}
+.linkButton:hover { color: var(--colourInk); }
+
+/* ---------- 4. Cards, panels and tags ---------- */
+.card {
+  background-color: var(--colourCard);
+  border: 1px solid var(--colourLine);
+  border-radius: var(--radiusLarge);
+  overflow: hidden;
+}
+
+.cardBody { padding: var(--spaceMd); }
+
+.panel {
+  background-color: var(--colourCard);
+  border: 1px solid var(--colourLine);
+  border-radius: var(--radiusLarge);
+  padding: var(--spaceMd);
+}
+
+.tag {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: var(--radiusRound);
+  background-color: var(--colourSky);
+  font-size: 13px;
+  line-height: 18px;
+}
+
+.tagRose { background-color: var(--colourRose); }
+.tagLilac { background-color: var(--colourLilac); }
+.tagBlush { background-color: var(--colourBlush); }
+.tagGrey { background-color: #EDE9F1; color: var(--colourInkSoft); }
+
+.price { font-family: var(--fontHeading); font-size: 20px; }
+
+.muted { color: var(--colourInkSoft); }
+.small { font-size: 14px; line-height: 22px; }
+.center { text-align: center; }
+
+/* ---------- 5. Filter chips (services and shop) ---------- */
+.chip {
+  padding: 8px 16px;
+  border: 1px solid var(--colourLilac);
+  border-radius: var(--radiusRound);
+  background-color: var(--colourCard);
+  font-family: var(--fontBody);
+  font-size: 14px;
+  color: var(--colourInk);
+  cursor: pointer;
+}
+
+.chip:hover { background-color: #F8F1FA; }
+.chip.isActive { background-color: var(--colourLilac); }
+
+/* ---------- 6. Forms ---------- */
+.field { margin-bottom: var(--spaceMd); }
+
+.field label { display: block; margin-bottom: var(--spaceXs); font-size: 14px; }
+
+.fieldTitle { display: block; margin-bottom: var(--spaceXs); font-size: 14px; }
+
+.field .hint { font-size: 13px; color: var(--colourInkSoft); margin-top: 4px; }
+
+input[type="text"], input[type="tel"], input[type="email"],
+input[type="date"], input[type="time"], input[type="number"],
+input[type="password"], input[type="search"],
+select, textarea {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid var(--colourLilac);
+  border-radius: var(--radiusSmall);
+  font-family: var(--fontBody);
+  font-size: 15px;
+  color: var(--colourInk);
+  background-color: var(--colourCard);
+}
+
+textarea { min-height: 110px; resize: vertical; }
+
+/* JavaScript adds hasError to the wrapper; the CSS does the rest */
+.field.hasError input,
+.field.hasError select,
+.field.hasError textarea {
+  border-color: var(--colourWarn);
+  background-color: #FFF6F3;
+}
+
+.errorText { display: none; margin-top: 4px; font-size: 13px; color: var(--colourWarn); }
+.field.hasError .errorText { display: block; }
+
+.choiceRow { display: flex; flex-wrap: wrap; gap: var(--spaceSm); }
+
+.choice {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border: 1px solid var(--colourLilac);
+  border-radius: var(--radiusRound);
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.checkboxRow { display: flex; align-items: flex-start; gap: 10px; font-size: 14px; }
+.checkboxRow input { margin-top: 4px; }
+
+/* Two fields side by side, used on several forms */
+.twoColumns { display: grid; grid-template-columns: 1fr 1fr; gap: var(--spaceMd); }
+
+/* ---------- 7. Notice strips ---------- */
+.notice {
+  padding: 14px 16px;
+  border-radius: var(--radiusSmall);
+  border-left: 4px solid var(--colourLilac);
+  background-color: #F8F1FA;
+  font-size: 14px;
+  line-height: 22px;
+}
+
+.noticeGood { border-left-color: var(--colourGood); background-color: #F0F8F4; }
+.noticeWarn { border-left-color: var(--colourWarn); background-color: #FDF3F0; }
+
+/* ---------- 8. Pop-ups (built by messageModal.js, or written by hand) ---------- */
+.modal {
+  display: none;                            /* hidden until JS adds isOpen */
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  z-index: 100;
+  padding: 20px;
+  background-color: rgba(58, 46, 79, 0.45);
+}
+
+.modal.isOpen { display: flex; align-items: center; justify-content: center; }
+
+.modalBox {
+  position: relative;
+  width: 100%;
+  max-width: 460px;
+  max-height: 90vh;
+  overflow-y: auto;
+  padding: var(--spaceLg);
+  background-color: var(--colourCard);
+  border-radius: var(--radiusLarge);
+  border-top: 6px solid var(--colourRose);
+}
+
+.modalBoxWide { max-width: 760px; }
+.modalBox h3 { margin-bottom: var(--spaceSm); }
+.modalBox p { margin-bottom: var(--spaceMd); }
+
+.modalActions { display: flex; flex-wrap: wrap; gap: var(--spaceSm); margin-top: var(--spaceMd); }
+
+.modalClose {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 34px;
+  height: 34px;
+  border: none;
+  border-radius: var(--radiusRound);
+  background-color: #F4ECF6;
+  font-size: 18px;
+  line-height: 34px;
+  cursor: pointer;
+}
+
+/* ---------- 9. Pictures (built by picture.js) ----------
+   A picture sits inside a box. If the file is missing, the image is hidden
+   and the box shows a soft colour with the picture's name instead.
+   Each page decides the size of its boxes (height or aspect-ratio). */
+.picture {
+  display: block;
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 4 / 3;              /* used when the page sets no height */
+  background-color: #F8F1FA;
+}
+
+.picture img { width: 100%; height: 100%; object-fit: cover; }
+
+.picture.isMissing {
+  background: linear-gradient(150deg, var(--colourBlush) 0%, var(--colourLilac) 100%);
+}
+
+.picture.isMissing img { display: none; }
+
+.picture.isMissing::after {
+  content: attr(data-label);
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spaceSm);
+  font-family: var(--fontHeading);
+  font-size: 15px;
+  line-height: 20px;
+  text-align: center;
+  color: var(--colourInk);
+  opacity: 0.7;
+}
+
+/* The picture at the top of every card */
+.cardPicture { height: 220px; aspect-ratio: auto; }
+
+/* ---------- 10. Summary rows (built by orderLines.js) ----------
+   Used by the cart, checkout, payment and tracking pages. */
+.summaryRow { display: flex; justify-content: space-between; gap: var(--spaceSm); padding: 8px 0; }
+
+.summaryTotal {
+  margin-top: var(--spaceXs);
+  padding-top: var(--spaceSm);
+  border-top: 1px solid var(--colourLine);
+  font-family: var(--fontHeading);
+  font-size: 20px;
+}
+
+/* A list of rows with a line under each one (payment and tracking) */
+.summaryLines .summaryRow:not(.summaryTotal) { border-bottom: 1px solid var(--colourLine); font-size: 15px; }
+.summaryLines .summaryTotal { border-top: none; }
+
+/* ---------- 11. Footer (built by siteFooter.js) ---------- */
+.siteFooter {
+  margin-top: var(--spaceXl);
+  padding: var(--spaceXl) 0 var(--spaceMd);
+  background-color: var(--colourBlush);
+}
+
+.footerGrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--spaceLg); }
+.footerGrid h4 { margin-bottom: var(--spaceSm); }
+.footerGrid ul { list-style: none; }
+.footerGrid li { margin-bottom: 6px; font-size: 14px; }
+.footerGrid a { text-decoration: none; }
+.footerGrid a:hover { text-decoration: underline; }
+
+.footerBottom {
+  margin-top: var(--spaceLg);
+  padding-top: var(--spaceMd);
+  border-top: 1px solid #F0B9CE;
+  font-size: 13px;
+  color: var(--colourInkSoft);
+}
+
+/* ---------- 12. Responsive rules for the shell ---------- */
+@media (max-width: 768px) {
+  .menuButton { display: block; }
+
+  .siteNav {
+    display: none;
+    position: absolute;
+    top: 72px;
+    left: 0;
+    right: 0;
+    background-color: var(--colourCard);
+    border-bottom: 1px solid var(--colourLine);
+    padding: var(--spaceMd) 20px;
+  }
+
+  .siteNav.isOpen { display: block; }
+  .siteNav ul { flex-direction: column; align-items: flex-start; gap: var(--spaceSm); }
+
+  .footerGrid { grid-template-columns: 1fr 1fr; }
+  .section { padding-top: var(--spaceLg); padding-bottom: var(--spaceLg); }
+}
+
+@media (max-width: 480px) {
+  .footerGrid { grid-template-columns: 1fr; }
+  .modalBox { padding: var(--spaceMd); }
+  .twoColumns { grid-template-columns: 1fr; gap: 0; }
+  .cardPicture { height: 180px; }
+  .button { width: 100%; }
+  .modalActions .button { width: 100%; }
+}

@@ -1,0 +1,154 @@
+/* ==========================================================================
+   The parts the three admin screens share: the top bar, the side menu,
+   the toolbar above a table, and the tables themselves.
+   These are the styles adminShell.js and the row components rely on.
+   ========================================================================== */
+
+.adminHeader { background-color: var(--colourInk); color: #FFFFFF; }
+
+.adminHeader .headerInner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spaceMd);
+  height: 64px;
+  max-width: var(--pageWidth);
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.adminHeader a { color: #FFFFFF; text-decoration: none; }
+.adminTitle { font-family: var(--fontHeading); font-size: 18px; }
+.adminUser { font-size: 14px; opacity: 0.85; }
+
+/* Side menu on the left, content on the right */
+.adminLayout {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: var(--spaceLg);
+  max-width: var(--pageWidth);
+  margin: 0 auto;
+  padding: var(--spaceLg) 20px var(--spaceXl);
+}
+
+.adminMenu { list-style: none; }
+.adminMenu li { margin-bottom: 4px; }
+
+.adminMenu a {
+  display: block;
+  padding: 10px 14px;
+  border-radius: var(--radiusSmall);
+  text-decoration: none;
+  font-size: 15px;
+}
+
+.adminMenu a:hover { background-color: #F4ECF6; }
+.adminMenu a.isCurrent { background-color: var(--colourLilac); }
+
+.adminHead {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--spaceMd);
+  flex-wrap: wrap;
+  margin-bottom: var(--spaceMd);
+}
+
+.adminToolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--spaceSm);
+  margin-bottom: var(--spaceMd);
+}
+
+.adminToolbar input[type="search"] { width: 260px; }
+.adminToolbar select { width: 180px; }
+
+/* A count above the table, e.g. "2 waiting to be checked" */
+.countPill {
+  display: inline-block;
+  padding: 6px 14px;
+  background-color: var(--colourRose);
+  border-radius: var(--radiusRound);
+  font-size: 14px;
+}
+
+/* The table scrolls sideways inside this box on a small screen,
+   instead of stretching the whole page */
+.tableHolder {
+  overflow-x: auto;
+  background-color: var(--colourCard);
+  border: 1px solid var(--colourLine);
+  border-radius: var(--radiusLarge);
+}
+
+table { width: 100%; border-collapse: collapse; font-size: 14px; }
+
+thead th {
+  padding: 12px 14px;
+  background-color: #F8F1FA;
+  text-align: left;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+tbody td { padding: 12px 14px; border-top: 1px solid var(--colourLine); vertical-align: middle; }
+tbody tr:hover { background-color: #FDF8FC; }
+tbody tr[hidden] { display: none; }
+
+.rowActions { white-space: nowrap; }
+
+.emptyNote { margin-top: var(--spaceMd); }
+
+/* The detail pop-up shared by the orders and bookings screens */
+.detailGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spaceMd);
+  padding: var(--spaceMd) 0;
+  margin: var(--spaceMd) 0;
+  border-top: 1px solid var(--colourLine);
+  border-bottom: 1px solid var(--colourLine);
+}
+
+.detailGrid p { margin: 0; }
+.detailLabel { margin-bottom: 2px; }
+.whatsappLink { margin: var(--spaceMd) 0; }
+
+.statusForm { padding-top: var(--spaceMd); border-top: 1px solid var(--colourLine); }
+
+@media (max-width: 768px) {
+  .adminLayout { grid-template-columns: 1fr; }
+  .adminMenu { display: flex; flex-wrap: wrap; gap: var(--spaceXs); }
+  .adminToolbar input[type="search"], .adminToolbar select { width: 100%; }
+}
+
+@media (max-width: 480px) {
+  .detailGrid { grid-template-columns: 1fr; gap: var(--spaceSm); }
+}
+
+/* Hidden from the eye but still reachable with the keyboard and by screen
+   readers. Used for file boxes that have a button-style label instead. */
+.visuallyHidden {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  border: 0 !important;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* The file box in forms, e.g. the photo in Add a product */
+input[type="file"] {
+  width: 100%;
+  padding: 10px;
+  border: 1px dashed var(--colourLilac);
+  border-radius: var(--radiusSmall);
+  background-color: var(--colourCard);
+  font-family: var(--fontBody);
+  font-size: 14px;
+}
+.field.hasError input[type="file"] { border-color: var(--colourWarn); background-color: #FFF6F3; }

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Your cart - Reshma Beauty Parlour</title>
+
+  <link rel="stylesheet" href="../css/palette.css">
+  <link rel="stylesheet" href="../css/siteShell.css">
+  <link rel="stylesheet" href="../css/cart.css">
+  <link rel="icon" href="../images/logoReshma.svg">
+</head>
+<body data-root="../">
+
+  <div id="siteHeader" data-page="cart"></div>
+
+  <main class="wrap section">
+
+    <div class="sectionHead">
+      <h1>Your cart</h1>
+      <p>Check the sizes and quantities, then go to checkout. Payment happens after.</p>
+    </div>
+
+    <!-- cart.js fills and shows this when a price changed since it was added -->
+    <div class="notice noticeWarn cartNotice" id="priceNotice" hidden></div>
+
+    <div class="cartLayout">
+
+      <!-- cart.js fills this using the cartLine component -->
+      <div id="cartLines"></div>
+
+      <div class="panel center" id="emptyCart" hidden>
+        <h3>Your cart is empty</h3>
+        <p class="small muted">Add something from the shop and it will appear here.</p>
+        <a class="button buttonMain" href="shop.html">Go to the shop</a>
+      </div>
+
+      <aside class="cartSummary panel" id="cartSummary">
+        <h3>Summary</h3>
+
+        <div class="summaryRow">
+          <span>Items</span>
+          <span id="summaryItems"></span>
+        </div>
+
+        <div class="summaryRow">
+          <span>Subtotal</span>
+          <span id="summarySubtotal"></span>
+        </div>
+
+        <div class="summaryRow small muted">
+          <span>Delivery</span>
+          <span>Chosen at checkout</span>
+        </div>
+
+        <div class="summaryRow summaryTotal">
+          <span>Total so far</span>
+          <span id="summaryTotal"></span>
+        </div>
+
+        <a class="button buttonMain buttonWide" href="checkout.html">Go to checkout</a>
+        <a class="button buttonPlain buttonWide cartKeepShopping" href="shop.html">Keep shopping</a>
+
+        <p class="small muted">
+          No card details are asked for. You pay with MCB Juice after the order is placed.
+        </p>
+      </aside>
+
+    </div>
+  </main>
+
+  <footer id="siteFooter"></footer>
+
+  <script src="../js/data/businessInfo.js"></script>
+  <script src="../js/data/siteImages.js"></script>
+  <script src="../js/data/cartItems.js"></script>
+  <script src="../js/data/products.js"></script>
+  <script src="../js/modalPopup.js"></script>
+  <script src="../js/components/picture.js"></script>
+  <script src="../js/components/contactLinks.js"></script>
+  <script src="../js/components/siteHeader.js"></script>
+  <script src="../js/components/siteFooter.js"></script>
+  <script src="../js/components/messageModal.js"></script>
+  <script src="../js/components/cartLine.js"></script>
+  <script src="../js/cart.js"></script>
+</body>
+</html>

@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Checkout - Reshma Beauty Parlour</title>
+
+  <link rel="stylesheet" href="../css/palette.css">
+  <link rel="stylesheet" href="../css/siteShell.css">
+  <link rel="stylesheet" href="../css/checkout.css">
+  <link rel="icon" href="../images/logoReshma.svg">
+</head>
+<body data-root="../">
+
+  <div id="siteHeader" data-page="cart"></div>
+
+  <main class="wrap section">
+
+    <div class="sectionHead">
+      <h1>Checkout</h1>
+      <p>Step 1 of 2. Tell us where the order goes. You will get a payment code on the next screen.</p>
+    </div>
+
+    <div class="checkoutLayout">
+
+      <!-- novalidate turns off the browser's own messages so our
+           JavaScript can show friendlier ones -->
+      <form class="panel" id="checkoutForm" novalidate>
+
+        <h3>Your details</h3>
+
+        <div class="field">
+          <label for="fullName">Full name</label>
+          <input type="text" id="fullName" name="fullName" autocomplete="name">
+          <span class="errorText">Please enter your name.</span>
+        </div>
+
+        <div class="field">
+          <label for="mobile">Mobile number</label>
+          <input type="tel" id="mobile" name="mobile" placeholder="5xxx xxxx" autocomplete="tel">
+          <span class="hint">We use this to reach you on WhatsApp and to look up your order later.</span>
+          <span class="errorText">Enter a Mauritian mobile number, 8 digits starting with 5.</span>
+        </div>
+
+        <div class="field">
+          <label for="email">Email (optional)</label>
+          <input type="email" id="email" name="email" autocomplete="email">
+          <span class="errorText">That email address does not look right.</span>
+        </div>
+
+        <h3 class="formSectionTitle">How do you want it?</h3>
+
+        <div class="field">
+          <div class="choiceRow">
+            <label class="choice">
+              <input type="radio" name="fulfilment" value="pickup" checked>
+              Pick up at the salon
+            </label>
+            <label class="choice">
+              <input type="radio" name="fulfilment" value="delivery">
+              Delivery (<span id="deliveryFeeLabel"></span>)
+            </label>
+          </div>
+        </div>
+
+        <!-- Hidden until Delivery is chosen -->
+        <div class="field" id="addressField" hidden>
+          <label for="address">Delivery address</label>
+          <textarea id="address" name="address" placeholder="Street, town, any landmark"></textarea>
+          <span class="errorText">We need an address to deliver to.</span>
+        </div>
+
+        <div class="field">
+          <label for="orderNote">Note for us (optional)</label>
+          <textarea id="orderNote" name="note" placeholder="For example: please keep it until Saturday"></textarea>
+        </div>
+
+        <div class="field">
+          <label class="checkboxRow">
+            <input type="checkbox" id="paymentAck" name="acknowledge">
+            <span>
+              I understand the order is only confirmed after the salon
+              checks my MCB Juice payment.
+            </span>
+          </label>
+          <span class="errorText">Please tick this box to continue.</span>
+        </div>
+
+        <button class="button buttonMain buttonWide" type="submit">Place order</button>
+      </form>
+
+      <aside class="panel checkoutSummary">
+        <h3>Your order</h3>
+
+        <!-- checkout.js fills this from the same cart data the cart page uses -->
+        <div id="summaryItems"></div>
+
+        <!-- checkout.js fills the subtotal, delivery and total rows -->
+        <div id="summaryTotals"></div>
+
+        <p class="small muted">Nothing is charged now. The next screen shows how to pay.</p>
+      </aside>
+
+    </div>
+  </main>
+
+  <footer id="siteFooter"></footer>
+
+  <div class="modal" id="orderPlacedModal" role="dialog" aria-modal="true" aria-labelledby="placedTitle">
+    <div class="modalBox">
+      <h3 id="placedTitle">Order placed</h3>
+      <p>Your purchase code is <strong id="newOrderCode"></strong>. The next screen shows how to pay with MCB Juice.</p>
+      <div class="modalActions">
+        <a class="button buttonMain" href="payment.html">See payment details</a>
+      </div>
+    </div>
+  </div>
+
+  <script src="../js/data/businessInfo.js"></script>
+  <script src="../js/data/siteImages.js"></script>
+  <script src="../js/data/cartItems.js"></script>
+  <script src="../js/data/products.js"></script>
+  <script src="../js/modalPopup.js"></script>
+  <script src="../js/components/picture.js"></script>
+  <script src="../js/components/contactLinks.js"></script>
+  <script src="../js/components/siteHeader.js"></script>
+  <script src="../js/components/siteFooter.js"></script>
+  <script src="../js/components/messageModal.js"></script>
+  <script src="../js/components/formField.js"></script>
+  <script src="../js/components/orderLines.js"></script>
+  <script src="../js/checkout.js"></script>
+</body>
+</html>

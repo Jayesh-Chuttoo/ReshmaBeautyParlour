@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- product.js replaces this title with the product's name -->
+  <title>Product - Reshma Beauty Parlour</title>
+
+  <link rel="stylesheet" href="../css/palette.css">
+  <link rel="stylesheet" href="../css/siteShell.css">
+  <link rel="stylesheet" href="../css/product.css">
+  <link rel="icon" href="../images/logoReshma.svg">
+</head>
+<body data-root="../">
+
+  <div id="siteHeader" data-page="shop"></div>
+
+  <!-- Everything inside main is filled by product.js from products.js.
+       The address says which product: product.html?id=floralSummerDress -->
+  <main class="wrap section">
+
+    <p class="small muted crumbs">
+      <a href="shop.html">Shop</a> / <span id="crumbCategory"></span>
+    </p>
+
+    <div class="productLayout" id="productLayout">
+
+      <!-- Left: photos. Clicking the big one opens it larger. -->
+      <div class="productPhotos">
+        <div id="mainPhotoHolder"></div>
+        <div class="thumbRow" id="thumbRow"></div>
+        <p class="small muted" id="zoomHint">Tap the large photo to see it full size.</p>
+      </div>
+
+      <!-- Right: details and the add-to-cart controls -->
+      <div class="productDetails">
+        <span id="productTag"></span>
+        <h1 id="productName"></h1>
+        <p class="productPrice" id="productPrice"></p>
+        <p id="productDescription"></p>
+
+        <div class="field">
+          <span class="fieldTitle">Size</span>
+          <!-- A size with nothing left is shown greyed out -->
+          <div class="sizeRow" id="sizeRow"></div>
+          <p class="errorText" id="sizeError">Please choose a size first.</p>
+        </div>
+
+        <div class="field">
+          <span class="fieldTitle">Quantity</span>
+          <div class="quantityRow">
+            <button class="quantityButton" type="button" id="minusButton" aria-label="Fewer">&minus;</button>
+            <input type="number" id="quantityInput" value="1" min="1" readonly>
+            <button class="quantityButton" type="button" id="plusButton" aria-label="More">+</button>
+          </div>
+          <p class="hint" id="quantityHint"></p>
+        </div>
+
+        <button class="button buttonMain buttonWide" type="button" id="addToCartButton">
+          Add to cart
+        </button>
+
+        <ul class="productPoints small" id="productPoints"></ul>
+      </div>
+    </div>
+
+    <!-- Shown instead when the address has no id, or an id that does not exist -->
+    <div class="panel center" id="productMissing" hidden>
+      <h2>This product is not available</h2>
+      <p class="small muted">It may have been removed from the shop.</p>
+      <a class="button buttonMain" href="shop.html">Go to the shop</a>
+    </div>
+
+  </main>
+
+  <footer id="siteFooter"></footer>
+
+  <!-- Two pop-ups written by hand: one has two different actions, the other
+       holds a picture. Plain messages come from messageModal.js. -->
+  <div class="modal" id="addedModal" role="dialog" aria-modal="true" aria-labelledby="addedTitle">
+    <div class="modalBox">
+      <button class="modalClose" type="button" data-close aria-label="Close">&times;</button>
+      <h3 id="addedTitle">Added to your cart</h3>
+      <p id="addedSummary"></p>
+      <div class="modalActions">
+        <a class="button buttonMain" href="cart.html">View cart</a>
+        <button class="button buttonPlain" type="button" data-close>Keep shopping</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="photoModal" role="dialog" aria-modal="true" aria-label="Product photo">
+    <div class="modalBox modalBoxWide">
+      <button class="modalClose" type="button" data-close aria-label="Close">&times;</button>
+      <div id="photoModalPicture"></div>
+    </div>
+  </div>
+
+  <script src="../js/data/businessInfo.js"></script>
+  <script src="../js/data/siteImages.js"></script>
+  <script src="../js/data/cartItems.js"></script>
+  <script src="../js/data/products.js"></script>
+  <script src="../js/modalPopup.js"></script>
+  <script src="../js/components/picture.js"></script>
+  <script src="../js/components/contactLinks.js"></script>
+  <script src="../js/components/siteHeader.js"></script>
+  <script src="../js/components/siteFooter.js"></script>
+  <script src="../js/components/messageModal.js"></script>
+  <script src="../js/product.js"></script>
+</body>
+</html>

@@ -1,0 +1,123 @@
+.crumbs { margin-bottom: var(--spaceMd); }
+.crumbs a { text-decoration: none; }
+
+.productLayout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spaceXl);
+  align-items: start;
+}
+
+.mainPhoto {
+  aspect-ratio: 4 / 5;
+  border-radius: var(--radiusLarge);
+  border: 1px solid var(--colourLine);
+  cursor: zoom-in;
+}
+
+/* No zoom when the photo file is not there yet */
+.mainPhoto.isMissing { cursor: default; }
+
+.thumbRow { display: flex; gap: var(--spaceSm); margin: var(--spaceSm) 0; }
+
+.thumb {
+  width: 86px;
+  height: 86px;
+  padding: 0;
+  overflow: hidden;
+  border: 2px solid var(--colourLine);
+  border-radius: var(--radiusSmall);
+  background: none;
+  cursor: pointer;
+}
+
+.thumb .picture { width: 100%; height: 100%; aspect-ratio: auto; }
+.thumb .picture.isMissing::after { content: none; }   /* too small for words */
+.thumb.isActive { border-color: var(--colourRose); }
+
+.productDetails h1 { margin: var(--spaceSm) 0; }
+#productDescription { margin-bottom: var(--spaceMd); }
+
+.productPrice {
+  font-family: var(--fontHeading);
+  font-size: 30px;
+  margin-bottom: var(--spaceMd);
+}
+
+/* ---------- Size buttons ---------- */
+.sizeRow { display: flex; flex-wrap: wrap; gap: var(--spaceSm); }
+
+.sizeButton {
+  min-width: 70px;
+  padding: 10px 14px;
+  border: 1px solid var(--colourLilac);
+  border-radius: var(--radiusSmall);
+  background-color: var(--colourCard);
+  font-family: var(--fontBody);
+  font-size: 15px;
+  color: var(--colourInk);
+  cursor: pointer;
+}
+
+.sizeButton:hover:not([disabled]) { background-color: #F8F1FA; }
+.sizeButton.isChosen { background-color: var(--colourRose); border-color: var(--colourRose); }
+
+/* A size with no stock: shown, but greyed out and not clickable */
+.sizeButton[disabled] { opacity: 0.45; cursor: not-allowed; text-decoration: line-through; }
+
+.sizeNote { display: block; font-size: 11px; color: var(--colourInkSoft); }
+
+/* This error sits outside a field wrapper, so it needs its own rule */
+#sizeError.isVisible { display: block; }
+
+/* ---------- Quantity ---------- */
+.quantityRow { display: flex; align-items: center; width: 150px; }
+
+.quantityButton {
+  width: 44px;
+  height: 46px;
+  border: 1px solid var(--colourLilac);
+  background-color: var(--colourCard);
+  font-size: 18px;
+  color: var(--colourInk);
+  cursor: pointer;
+}
+
+.quantityButton:first-of-type { border-radius: var(--radiusSmall) 0 0 var(--radiusSmall); }
+.quantityButton:last-of-type { border-radius: 0 var(--radiusSmall) var(--radiusSmall) 0; }
+
+.quantityRow input {
+  width: 62px;
+  height: 46px;
+  border-radius: 0;
+  border-left: none;
+  border-right: none;
+  text-align: center;
+}
+
+/* ---------- The reassurance list ---------- */
+.productPoints { list-style: none; margin-top: var(--spaceMd); color: var(--colourInkSoft); }
+.productPoints li { position: relative; padding-left: 18px; margin-bottom: 6px; }
+
+.productPoints li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 9px;
+  width: 8px;
+  height: 8px;
+  border-radius: var(--radiusRound);
+  background-color: var(--colourSky);
+}
+
+#photoModalPicture .picture { aspect-ratio: auto; border-radius: var(--radiusSmall); }
+#photoModalPicture img { height: auto; }
+
+@media (max-width: 768px) {
+  .productLayout { grid-template-columns: 1fr; gap: var(--spaceLg); }
+}
+
+@media (max-width: 480px) {
+  .thumb { width: 68px; height: 68px; }
+  .productPrice { font-size: 26px; }
+}

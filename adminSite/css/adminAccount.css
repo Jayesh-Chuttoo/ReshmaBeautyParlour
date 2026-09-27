@@ -1,0 +1,45 @@
+/* ==========================================================================
+   The Sign-in details screen: two forms side by side, one under the other
+   on a small screen.
+   ========================================================================== */
+
+.accountGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: var(--spaceMd);
+  align-items: start;
+}
+
+.accountGrid h3 { margin-bottom: var(--spaceXs); }
+.accountGrid form > p { margin-bottom: var(--spaceMd); }
+.accountGrid .field:first-of-type { margin-top: var(--spaceMd); }
+
+.showPasswords { margin-bottom: var(--spaceMd); }
+
+/* The rules under the new password. Each one gets a tick once it is met. */
+.passwordChecklist { list-style: none; margin-top: var(--spaceXs); color: var(--colourInkSoft); }
+
+.passwordChecklist li { position: relative; padding-left: 22px; }
+
+.passwordChecklist li::before {
+  content: "";
+  position: absolute;
+  left: 2px;
+  top: 6px;
+  width: 10px;
+  height: 10px;
+  border: 2px solid var(--colourLilac);
+  border-radius: var(--radiusRound);
+}
+
+.passwordChecklist li.isMet { color: var(--colourGood); }
+
+.passwordChecklist li.isMet::before {
+  content: "\2713";            /* a tick */
+  top: 1px;
+  width: auto;
+  height: auto;
+  border: none;
+  font-size: 14px;
+  line-height: 20px;
+}
