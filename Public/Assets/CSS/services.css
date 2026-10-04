@@ -1,0 +1,13 @@
+/* Services Page Custom Styles */
+.services-header-text {
+    color: var(--text-muted);
+    margin-top: 0.5rem;
+}
+
+.service-card .btn {
+    background-color: var(--secondary);
+}
+
+.service-card .btn:hover {
+    background-color: var(--primary);
+}
