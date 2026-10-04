@@ -1,10 +1,10 @@
 <?php
-$pageTitle = "Services - Elegance Saloon";
+$pageTitle = "Services - Reshma Beauty Parlour";
 $pageCss   = "services.css";
-    
+
 require_once __DIR__ . '/../Includes/Components/header.php';
 require_once __DIR__ . '/../Includes/Data/service_data.php';
- 
+
 ?>
 
 <main>

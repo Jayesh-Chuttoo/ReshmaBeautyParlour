@@ -1,17 +1,31 @@
 :root {
-    --primary: #c9a27e;
-    /* Warm gold/bronze */
-    --primary-dark: #a8815c;
-    --secondary: #2c3e50;
-    /* Dark slate */
-    --background: #fdfbf7;
-    /* Off-white */
+    /* Primary: Salmon Pink Palette */
+    --primary: #fa8072;
+    /* Vibrant Salmon Pink */
+    --primary-dark: #e06658;
+    /* Deep Salmon / Coral Shadow */
+
+    /* Secondary: Deep Charcoal with Subtle Warmth */
+    --secondary: #2b2627;
+    /* Dark Soft Slate */
+
+    /* Backgrounds & Surfaces */
+    --background: #fffaf9;
+    /* Subtle warm blush off-white */
     --surface: #ffffff;
-    /* Pure white for cards */
-    --text-main: #333333;
-    --text-muted: #777777;
+    /* Pure white for cards & containers */
+
+    /* Typography */
+    --text-main: #332d2e;
+    /* Deep espresso gray for rich contrast */
+    --text-muted: #7d7374;
+    /* Muted neutral tone */
+
+    /* Utility & Status Colors */
     --danger: #e74c3c;
     --success: #2ecc71;
+
+    /* Layout Properties */
     --radius: 8px;
 }
 

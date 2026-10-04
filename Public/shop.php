@@ -3,7 +3,7 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-$pageTitle = "Boutique Shop - Elegance Saloon";
+$pageTitle = "Boutique Shop - Reshma Beauty Parlour";
 $pageCss   = "shop.css";
 
 require_once __DIR__ . '/../Includes/Components/header.php';

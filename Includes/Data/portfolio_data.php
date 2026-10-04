@@ -44,7 +44,7 @@ $testimonials = [
     [
         'name' => 'Sarah Jenkins',
         'role' => 'Regular Client',
-        'comment' => 'Jane is a true artist! I’ve been coming to Elegance Saloon for 3 years, and every visit leaves me feeling confident and rejuvenated.',
+        'comment' => 'Jane is a true artist! I’ve been coming to Reshma Beauty Parlour for 3 years, and every visit leaves me feeling confident and rejuvenated.',
         'rating' => 5
     ],
     [

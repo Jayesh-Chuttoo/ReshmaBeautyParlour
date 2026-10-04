@@ -5,7 +5,7 @@
 
             <!-- Column 1: Salon Brand & Socials -->
             <div class="footer-col brand-col">
-                <h3 class="footer-logo">Elegance Saloon</h3>
+                <h3 class="footer-logo">Reshma Beauty Parlour</h3>
                 <p class="footer-about">
                     Dedicated to elevating your personal beauty with bespoke styling, organic treatments, and luxury boutique care.
                 </p>
@@ -48,7 +48,7 @@
     <!-- Bottom Copyright & Credit Bar -->
     <div class="footer-bottom">
         <div class="footer-bottom-container">
-            <p>&copy; <?php echo date("Y"); ?> Elegance Saloon. All rights reserved.</p>
+            <p>&copy; <?php echo date("Y"); ?> Reshma Beauty Parlour. All rights reserved.</p>
 
             <!-- Highlighted Infinity Badge -->
             <div class="powered-by-wrapper">
