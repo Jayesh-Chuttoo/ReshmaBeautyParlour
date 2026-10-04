@@ -43,10 +43,10 @@ $imagePath = !empty($image) && file_exists(__DIR__ . '/../../public/assets/image
 
         <div class="card-price">Rs <?php echo $price; ?></div>
 
-        <button class="btn"
+        <!-- <button class="btn"
             <?php echo !$inStock ? 'disabled' : ''; ?>
             onclick="showNotification('Added <?php echo addslashes($name); ?> to cart!')">
             <?php echo !$inStock ? 'Sold Out' : 'Add to Cart'; ?>
-        </button>
+        </button> -->
     </div>
 </div>

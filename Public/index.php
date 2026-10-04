@@ -22,7 +22,7 @@ $defaultSvg = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' w
             <span class="hero-subtitle badge-pill">Welcome to Reshma Beauty Parlour</span>
             <h1 class="hero-title">Crafting Timeless Beauty <br><span class="text-gradient">&amp; Personal Style</span></h1>
             <p class="hero-description">
-                Where luxury care meets master artistry. Led by Jane Doe, we offer bespoke hair styling, premium coloring, and personalized beauty treatments tailored to you.
+                Where luxury care meets master artistry. Led by Reshma, we offer bespoke hair styling, premium coloring, and personalized beauty treatments tailored to you.
             </p>
             <div class="hero-actions">
                 <a href="services.php" class="btn btn-hero btn-pulse">Explore Services</a>
@@ -49,9 +49,9 @@ $defaultSvg = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' w
             <div class="owner-image-wrapper floating-card">
                 <div class="img-frame">
                     <img src="assets/images/owner.jpg"
-                        alt="Jane Doe - Master Stylist"
+                        alt="Reshma - Master Stylist"
                         class="owner-img"
-                        onerror="this.onerror=null; this.src='https://via.placeholder.com/500x600?text=Jane+Doe+Portrait';">
+                        onerror="this.onerror=null; this.src='./Assets/Images/ReshmaPic.png';">
                 </div>
                 <div class="experience-badge float-animation">
                     <span class="badge-icon">★</span>
@@ -64,11 +64,11 @@ $defaultSvg = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' w
 
             <div class="owner-info">
                 <span class="section-tag">About the Founder</span>
-                <h2>Meet Jane Doe</h2>
+                <h2>Meet Reshma kiranti Kumari Juggessur</h2>
                 <h3 class="owner-subtitle">Master Stylist &amp; Beauty Director</h3>
 
                 <p class="portfolio-text">
-                    Trained in Paris and New York, Jane established Reshma Beauty Parlour to bridge high-fashion styling with approachable, everyday care. She believes that a great hair style isn't just about trends—it's about highlighting your natural essence.
+                    Highly trained professional, Reshma established Reshma Beauty Parlour to bridge high-fashion styling with approachable, everyday care. She believes that a great hair style isn't just about trends—it's about highlighting your natural essence.
                 </p>
 
                 <p class="portfolio-text">
@@ -77,12 +77,21 @@ $defaultSvg = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' w
 
                 <!-- Specialties List -->
                 <div class="specialties-container highlight-card">
-                    <h4>Areas of Expertise</h4>
+                    <h4>Areas of Expertise <small style="font-weight: normal; font-size: 0.8rem; color: var(--text-muted);">(Click to view details)</small></h4>
                     <ul class="specialties-list">
-                        <?php foreach ($specialties as $specialty): ?>
-                            <li class="specialty-item">
+                        <?php foreach ($specialties as $specialty):
+                            $specTitle = is_array($specialty) ? $specialty['title'] : $specialty;
+                            $specDesc = is_array($specialty) ? $specialty['description'] : "Specialized custom service using luxury products and techniques tailored specifically to your hair type and style preferences.";
+                            $specTime = is_array($specialty) ? $specialty['duration'] ?? '45-60 mins' : '45-60 mins';
+                        ?>
+                            <li class="specialty-item clickable-detail"
+                                data-type="service"
+                                data-title="<?php echo htmlspecialchars($specTitle); ?>"
+                                data-category="Specialized Service"
+                                data-description="<?php echo htmlspecialchars($specDesc); ?>"
+                                data-meta="Estimated Duration: <?php echo htmlspecialchars($specTime); ?>">
                                 <span class="check-icon">✓</span>
-                                <span><?php echo htmlspecialchars($specialty); ?></span>
+                                <span><?php echo htmlspecialchars($specTitle); ?></span>
                             </li>
                         <?php endforeach; ?>
                     </ul>
@@ -105,8 +114,15 @@ $defaultSvg = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' w
                 $imgSrc = !empty($item['image']) && file_exists(__DIR__ . '/public/assets/images/' . $item['image'])
                     ? "assets/images/{$item['image']}"
                     : $defaultSvg;
+                $description = !empty($item['description']) ? $item['description'] : "A bespoke transformation customized for our client using technique-focused coloring and precision styling.";
                 ?>
-                <div class="gallery-card interactive-card" style="--delay: <?php echo $index * 0.15; ?>s;">
+                <div class="gallery-card interactive-card clickable-detail"
+                    style="--delay: <?php echo $index * 0.15; ?>s;"
+                    data-type="portfolio"
+                    data-title="<?php echo htmlspecialchars($item['title']); ?>"
+                    data-category="<?php echo htmlspecialchars($item['category']); ?>"
+                    data-image="<?php echo $imgSrc; ?>"
+                    data-description="<?php echo htmlspecialchars($description); ?>">
                     <div class="gallery-image-container">
                         <img src="<?php echo $imgSrc; ?>"
                             alt="<?php echo htmlspecialchars($item['title']); ?>"
@@ -159,18 +175,38 @@ $defaultSvg = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' w
         </div>
     </section>
 
+    <!-- 7. DYNAMIC DETAIL MODAL / POPUP -->
+    <div id="detailModal" class="modal-backdrop" aria-hidden="true">
+        <div class="modal-container">
+            <button class="modal-close" id="modalCloseBtn" aria-label="Close modal">&times;</button>
+            <div class="modal-body">
+                <div class="modal-image-wrapper" id="modalImageWrapper">
+                    <img id="modalImage" src="" alt="Detail View">
+                </div>
+                <div class="modal-details">
+                    <span class="modal-badge" id="modalCategory">Category</span>
+                    <h3 class="modal-title" id="modalTitle">Title Here</h3>
+                    <p class="modal-description" id="modalDescription">Description text goes here.</p>
+                    <div class="modal-meta" id="modalMeta"></div>
+                    <div class="modal-actions">
+                        <a href="services.php" class="btn btn-hero">Book This Style / Service</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </main>
 
 <script>
-    // Scroll Reveal Observer
     document.addEventListener('DOMContentLoaded', function() {
+        // Scroll Reveal Observer
         const observerOptions = {
             root: null,
             rootMargin: '0px',
             threshold: 0.15
         };
-
-        const observer = new IntersectionObserver((entries, observer) => {
+        const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('is-visible');
@@ -179,6 +215,71 @@ $defaultSvg = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' w
         }, observerOptions);
 
         document.querySelectorAll('.animate-on-scroll').forEach(el => observer.observe(el));
+
+        // Modal Popup Logic
+        const modal = document.getElementById('detailModal');
+        const modalCloseBtn = document.getElementById('modalCloseBtn');
+        const modalImgWrapper = document.getElementById('modalImageWrapper');
+        const modalImg = document.getElementById('modalImage');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalCategory = document.getElementById('modalCategory');
+        const modalDesc = document.getElementById('modalDescription');
+        const modalMeta = document.getElementById('modalMeta');
+
+        function openModal(data) {
+            modalTitle.textContent = data.title;
+            modalCategory.textContent = data.category;
+            modalDesc.textContent = data.description;
+
+            if (data.image) {
+                modalImg.src = data.image;
+                modalImgWrapper.style.display = 'block';
+            } else {
+                modalImgWrapper.style.display = 'none';
+            }
+
+            if (data.meta) {
+                modalMeta.textContent = data.meta;
+                modalMeta.style.display = 'block';
+            } else {
+                modalMeta.style.display = 'none';
+            }
+
+            modal.classList.add('is-active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            modal.classList.remove('is-active');
+            document.body.style.overflow = '';
+        }
+
+        document.querySelectorAll('.clickable-detail').forEach(item => {
+            item.addEventListener('click', function() {
+                const data = {
+                    title: this.getAttribute('data-title'),
+                    category: this.getAttribute('data-category'),
+                    description: this.getAttribute('data-description'),
+                    image: this.getAttribute('data-image'),
+                    meta: this.getAttribute('data-meta')
+                };
+                openModal(data);
+            });
+        });
+
+        modalCloseBtn.addEventListener('click', closeModal);
+
+        modal.addEventListener('click', function(e) {
+            if (e.target === modal) {
+                closeModal();
+            }
+        });
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && modal.classList.contains('is-active')) {
+                closeModal();
+            }
+        });
     });
 </script>
 

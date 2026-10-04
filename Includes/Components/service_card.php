@@ -21,8 +21,8 @@ $imagePath   = !empty($image) ? "assets/images/{$image}" : "https://via.placehol
         <!-- Sticks to bottom of card -->
         <div class="card-price">Rs <?php echo $price; ?></div>
 
-        <button class="btn" onclick="showNotification('Booking added for <?php echo addslashes($title); ?>!')">
+        <!-- <button class="btn" onclick="showNotification('Booking added for <?php echo addslashes($title); ?>!')">
             Book Appointment
-        </button>
+        </button> -->
     </div>
 </div>
