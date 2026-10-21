@@ -9,7 +9,7 @@ $image       = htmlspecialchars($service['image'] ?? '');
 $imagePath   = !empty($image) ? "assets/images/{$image}" : "https://via.placeholder.com/400x200?text=Service+Image";
 ?>
 
-<div class="card" data-id="<?php echo $id; ?>">
+<div class="card service-card" data-id="<?php echo $id; ?>">
     <img src="<?php echo $imagePath; ?>"
         alt="<?php echo $title; ?>"
         onerror="this.src='https://via.placeholder.com/400x200?text=Service+Image'">
@@ -20,6 +20,10 @@ $imagePath   = !empty($image) ? "assets/images/{$image}" : "https://via.placehol
 
         <!-- Sticks to bottom of card -->
         <div class="card-price">Rs <?php echo $price; ?></div>
+
+        <button class="btn" onclick="openBookingModal('<?php echo addslashes($service['title'] ?? 'Untitled Service'); ?>', <?php echo (float)($service['price'] ?? 0); ?>)">
+            Book Appointment
+        </button>
 
         <!-- <button class="btn" onclick="showNotification('Booking added for <?php echo addslashes($title); ?>!')">
             Book Appointment

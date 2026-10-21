@@ -25,6 +25,7 @@
         ['url' => 'index.php', 'label' => 'Portfolio'],
         ['url' => 'services.php', 'label' => 'Services'],
         ['url' => 'shop.php', 'label' => 'Shop'],
+        ['url' => 'cart.php', 'label' => 'Cart'],
         ['url' => 'contact.php', 'label' => 'Contact Us']
     ];
     ?>

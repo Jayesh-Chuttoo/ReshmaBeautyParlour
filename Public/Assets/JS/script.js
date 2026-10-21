@@ -67,3 +67,83 @@ function filterProducts() {
     }
   });
 }
+
+
+// Check and toggle onsite visit visibility dynamically
+function checkOnsiteAvailability() {
+  const serviceNameInput = document.getElementById("modal-service-name").value;
+  const peopleInput = document.getElementById("booking-people");
+  const onsiteContainer = document.getElementById("onsite-container");
+  const onsiteCheckbox = document.getElementById("onsite-visit");
+
+  const peopleCount = parseInt(peopleInput.value) || 1;
+  const isBridal = serviceNameInput.toLowerCase().includes("bridal makeup");
+
+  // Show only if it's Bridal Makeup and people count is > 5
+  if (isBridal && peopleCount > 5) {
+    onsiteContainer.style.display = "block";
+  } else {
+    onsiteContainer.style.display = "none";
+    if (onsiteCheckbox) onsiteCheckbox.checked = false;
+  }
+}
+
+// Booking Modal Management
+function openBookingModal(serviceName = "General Consultation", price = 0) {
+  const modal = document.getElementById("booking-modal");
+  const serviceInput = document.getElementById("modal-service-name");
+  const peopleInput = document.getElementById("booking-people");
+  
+  if (serviceInput) {
+    serviceInput.value = serviceName + (price > 0 ? ` (Rs ${price.toFixed(2)})` : "");
+  }
+  
+  if (peopleInput) {
+    peopleInput.value = 1; // Reset to 1 on open
+  }
+  
+  checkOnsiteAvailability();
+  
+  if (modal) {
+    modal.style.display = "flex";
+  }
+}
+
+function closeBookingModal() {
+  const modal = document.getElementById("booking-modal");
+  if (modal) {
+    modal.style.display = "none";
+  }
+}
+
+function handleBookingSubmit(event) {
+  event.preventDefault();
+  const serviceName = document.getElementById("modal-service-name").value;
+  const clientName = document.getElementById("client-name").value;
+  const peopleCount = document.getElementById("booking-people").value;
+  const onsiteChecked = document.getElementById("onsite-visit")?.checked || false;
+  
+  closeBookingModal();
+  
+  let notificationText = `Booking added for ${clientName} - ${serviceName} (${peopleCount} person${peopleCount > 1 ? 's' : ''})`;
+  if (onsiteChecked) {
+    notificationText += ` [Onsite Visit Requested]`;
+  }
+  
+  if (typeof showNotification === "function") {
+    showNotification(notificationText);
+  } else {
+    alert(notificationText);
+  }
+  
+  // Reset form inputs
+  document.getElementById("booking-form").reset();
+}
+
+// Close modal when clicking outside of modal-content box
+window.addEventListener("click", function (event) {
+  const modal = document.getElementById("booking-modal");
+  if (event.target === modal) {
+    closeBookingModal();
+  }
+});
