@@ -56,7 +56,7 @@ $defaultSvg = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' w
                 <div class="experience-badge float-animation">
                     <span class="badge-icon">★</span>
                     <div>
-                        <strong>12+ Years</strong>
+                        <strong>20+ Years</strong>
                         <small>Master Experience</small>
                     </div>
                 </div>
@@ -64,7 +64,7 @@ $defaultSvg = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' w
 
             <div class="owner-info">
                 <span class="section-tag">About the Founder</span>
-                <h2>Meet Reshma kiranti Kumari Juggessur</h2>
+                <h2>Meet Reshma Juggessur</h2>
                 <h3 class="owner-subtitle">Master Stylist &amp; Beauty Director</h3>
 
                 <p class="portfolio-text">

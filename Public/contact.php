@@ -37,7 +37,7 @@ require_once __DIR__ . '/../Includes/Components/header.php';
                     Main Road, Petit Raffray<br>
                     Rivière du Rempart, Mauritius
                 </p>
-                <a href="https://maps.google.com/?q=Petit+Raffray+Mauritius" target="_blank" rel="noopener noreferrer" class="btn btn-outline">View on Google Maps</a>
+                <a href="https://maps.app.goo.gl/gFzABA21A6XWDoeg6" target="_blank" rel="noopener noreferrer" class="btn btn-outline">View on Google Maps</a>
             </div>
 
             <!-- WhatsApp Number Card -->
@@ -50,9 +50,9 @@ require_once __DIR__ . '/../Includes/Components/header.php';
                 <h3>WhatsApp Chat</h3>
                 <p class="contact-detail-text">
                     Quick responses for appointment bookings, inquiries, and custom style consultations.<br>
-                    <strong>+230 5000 0000</strong>
+                    <strong>+230 5784 0087</strong>
                 </p>
-                <a href="https://wa.me/23050000000" target="_blank" rel="noopener noreferrer" class="btn btn-hero btn-pulse">Chat on WhatsApp</a>
+                <a href="https://wa.me/230557840087" target="_blank" rel="noopener noreferrer" class="btn btn-hero btn-pulse">Chat on WhatsApp</a>
             </div>
 
         </div>

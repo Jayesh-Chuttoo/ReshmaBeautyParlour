@@ -1,15 +1,15 @@
 <?php
 // Statistics Bar Data
 $stats = [
-    ['number' => '12+', 'label' => 'Years Experience'],
-    ['number' => '3,500+', 'label' => 'Happy Clients'],
-    ['number' => '15+', 'label' => 'Industry Awards'],
+    ['number' => '20+', 'label' => 'Years Experience'],
+    ['number' => '350+', 'label' => 'Happy Clients'],
+    ['number' => '5+', 'label' => 'Industry Awards'],
     ['number' => '100%', 'label' => 'Organic Products']
 ];
 
 // Owner's Key Specialties
 $specialties = [
-    'Master Colorist (Paris Certified)',
+    'Master Colorist (Certified)',
     'Precision Hair Sculpting & Cut',
     'Bridal & High-Fashion Makeup',
     'Scalp Health & Keratin Specialist'

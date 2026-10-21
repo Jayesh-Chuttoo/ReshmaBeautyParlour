@@ -10,10 +10,10 @@
                     Dedicated to elevating your personal beauty with bespoke styling, organic treatments, and luxury boutique care.
                 </p>
                 <div class="social-links">
-                    <a href="#" aria-label="Facebook" class="social-icon">FB</a>
-                    <a href="#" aria-label="Instagram" class="social-icon">IG</a>
-                    <a href="#" aria-label="Pinterest" class="social-icon">PT</a>
-                    <a href="#" aria-label="WhatsApp" class="social-icon">WA</a>
+                    <a href="https://www.facebook.com/reshma.juggessur" aria-label="Facebook" class="social-icon">FB</a>
+                    <a href="https://www.instagram.com/reshmajuggessur?utm_source=ig_web_button_share_sheet&cplk=ZDNlZDc0MzIxNw==" aria-label="Instagram" class="social-icon">IG</a>
+                    <a href="https://wa.me/230557840087" aria-label="WhatsApp" class="social-icon">WA</a>
+                    <!-- <a href="#" aria-label="Pinterest" class="social-icon">PT</a> -->
                 </div>
             </div>
 
@@ -32,13 +32,14 @@
             <div class="footer-col">
                 <h4 class="footer-heading">Opening Hours & Location</h4>
                 <ul class="hours-list">
-                    <li><span>Mon - Fri:</span> 9:00 AM - 7:00 PM</li>
+                    <!-- <li><span>Mon - Fri:</span> 9:00 AM - 7:00 PM</li>
                     <li><span>Saturday:</span> 9:00 AM - 6:00 PM</li>
-                    <li><span>Sunday:</span> Closed</li>
+                    <li><span>Sunday:</span> Closed</li> -->
+                    <li><span>Make an Appointment:</span> Call to make reservations.</li>
                 </ul>
                 <div class="footer-contact">
-                    <p>📍 123 Beauty Lane, Suite 100</p>
-                    <p>📞 +1 (555) 019-2834</p>
+                    <p>📍 Main Road, Petit Raffray, Rivière du Rempart, Mauritius</p>
+                    <p>📞 5784 0087</p>
                 </div>
             </div>
 
