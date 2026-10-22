@@ -3,8 +3,10 @@ $pageTitle = "Services - Reshma Beauty Parlour";
 $pageCss   = "services.css";
 
 require_once __DIR__ . '/../Includes/Components/header.php';
-require_once __DIR__ . '/../Includes/Data/service_data.php';
+require_once __DIR__ . '/../Includes/db_queries.php'; // Includes your PDO connection and query helper functions
 
+// Fetch services directly from the database
+$services = getAllServices($pdo);
 ?>
 
 <main>
@@ -20,9 +22,13 @@ require_once __DIR__ . '/../Includes/Data/service_data.php';
     <p style="color: var(--text-muted); margin-top: 0.5rem;">Discover our range of premium beauty treatments.</p>
 
     <div class="grid">
-        <?php foreach ($services as $service): ?>
-            <?php require __DIR__ . '/../Includes/Components/service_card.php'; ?>
-        <?php endforeach; ?>
+        <?php if (!empty($services)): ?>
+            <?php foreach ($services as $service): ?>
+                <?php require __DIR__ . '/../Includes/Components/service_card.php'; ?>
+            <?php endforeach; ?>
+        <?php else: ?>
+            <p style="grid-column: 1/-1; padding: 2rem 0; text-align: center; color: var(--text-muted);">No services currently available.</p>
+        <?php endif; ?>
     </div>
 
     <div id="booking-modal" class="modal-overlay" style="display: none;">

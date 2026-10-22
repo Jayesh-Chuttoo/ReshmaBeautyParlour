@@ -1,60 +1,65 @@
 <?php
+session_set_cookie_params([
+    'lifetime' => 0,
+    'path' => '/',
+    'domain' => '',
+    'secure' => true,
+    'httponly' => true,
+    'samesite' => 'Strict'
+]);
 session_start();
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+
+// Security: Redirect to login if user is not authenticated
+if (!isset($_SESSION['user_id'])) {
+    header("Location: login.php");
+    exit;
+}
+
+ini_set('display_errors', 0);
+ini_set('log_errors', 1);
+ini_set('error_log', '/path/to/php-error.log');
 
 $pageTitle = "Shopping Cart - Reshma Beauty Parlour";
 $pageCss   = "cart.css";
 
-// --- NOTE FOR FUTURE DATABASE INTEGRATION ---
-// Later, instead of $_SESSION['cart'], you will fetch items from your database:
-// $cartItems = $pdo->query("SELECT p.*, c.quantity FROM cart c JOIN products p ON c.product_id = p.id WHERE c.user_id = $userId")->fetchAll();
+require_once __DIR__ . '/../Includes/db_queries.php';
 
-// Initialize mock array in session if not set (Simulating cart items)
-if (!isset($_SESSION['cart'])) {
-    $_SESSION['cart'] = [
-        1 => [
-            'id' => 1,
-            'title' => 'Professional Hair Serum',
-            'price' => 25.00,
-            'image' => 'serum.jpg',
-            'quantity' => 2
-        ],
-        2 => [
-            'id' => 2,
-            'title' => 'Hydrating Shampoo',
-            'price' => 18.50,
-            'image' => 'shampoo.jpg',
-            'quantity' => 1
-        ]
-    ];
-}
+$userId = $_SESSION['user_id'];
 
-// Handle cart actions (increment, decrement, remove, clear)
+// --- HANDLE CART ACTIONS VIA DATABASE ---
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $action = $_POST['action'] ?? '';
-    $id = (int)($_POST['id'] ?? 0);
+    $cartId = (int)($_POST['cart_id'] ?? 0);
+    $productId = (int)($_POST['product_id'] ?? 0);
 
-    if ($action === 'increase' && isset($_SESSION['cart'][$id])) {
-        $_SESSION['cart'][$id]['quantity']++;
-    } elseif ($action === 'decrease' && isset($_SESSION['cart'][$id])) {
-        $_SESSION['cart'][$id]['quantity']--;
-        if ($_SESSION['cart'][$id]['quantity'] <= 0) {
-            unset($_SESSION['cart'][$id]);
+    if ($action === 'increase' && $cartId > 0) {
+        $stmt = $pdo->prepare("SELECT quantity FROM cart WHERE id = :id AND user_id = :user_id");
+        $stmt->execute(['id' => $cartId, 'user_id' => $userId]);
+        $item = $stmt->fetch();
+        if ($item) {
+            updateCartItemQuantityDb($pdo, $cartId, $userId, $item['quantity'] + 1);
         }
-    } elseif ($action === 'remove' && isset($_SESSION['cart'][$id])) {
-        unset($_SESSION['cart'][$id]);
+    } elseif ($action === 'decrease' && $cartId > 0) {
+        $stmt = $pdo->prepare("SELECT quantity FROM cart WHERE id = :id AND user_id = :user_id");
+        $stmt->execute(['id' => $cartId, 'user_id' => $userId]);
+        $item = $stmt->fetch();
+        if ($item) {
+            updateCartItemQuantityDb($pdo, $cartId, $userId, $item['quantity'] - 1);
+        }
+    } elseif ($action === 'remove' && $cartId > 0) {
+        removeFromCartDb($pdo, $cartId, $userId);
     } elseif ($action === 'clear') {
-        $_SESSION['cart'] = [];
+        clearCartDb($pdo, $userId);
+    } elseif ($action === 'add' && $productId > 0) {
+        addToCartDb($pdo, $userId, $productId, 1);
     }
 
-    // Redirect to prevent form resubmission on refresh
     header("Location: cart.php");
     exit;
 }
 
-$cartItems = $_SESSION['cart'];
+// Fetch live cart items restricted strictly to the logged-in user
+$cartItems = getCartItems($pdo, $userId);
 $subtotal = 0;
 
 require_once __DIR__ . '/../Includes/Components/header.php';
@@ -84,35 +89,37 @@ require_once __DIR__ . '/../Includes/Components/header.php';
                     </thead>
                     <tbody>
                         <?php foreach ($cartItems as $item):
-                            $itemTotal = $item['price'] * $item['quantity'];
+                            $itemTotal = (float)$item['price'] * (int)$item['quantity'];
                             $subtotal += $itemTotal;
                             $imagePath = !empty($item['image']) ? "assets/images/{$item['image']}" : "https://via.placeholder.com/60?text=Product";
                         ?>
                             <tr>
                                 <td>
                                     <div class="cart-item-info">
-                                        <img src="<?php echo htmlspecialchars($imagePath); ?>" alt="<?php echo htmlspecialchars($item['title']); ?>" class="cart-item-img" onerror="this.src='https://via.placeholder.com/60?text=Product'">
-                                        <span><?php echo htmlspecialchars($item['title']); ?></span>
+                                        <img src="<?php echo htmlspecialchars($imagePath); ?>" alt="<?php echo htmlspecialchars($item['name']); ?>" class="cart-item-img" onerror="this.src='https://via.placeholder.com/60?text=Product'">
+                                        <span><?php echo htmlspecialchars($item['name']); ?></span>
                                     </div>
                                 </td>
                                 <td>Rs <?php echo number_format($item['price'], 2); ?></td>
                                 <td style="text-align: center;">
-                                    <form method="POST" style="display: inline;">
-                                        <input type="hidden" name="id" value="<?php echo $item['id']; ?>">
-                                        <input type="hidden" name="action" value="decrease">
-                                        <button type="submit" class="quantity-btn">-</button>
-                                    </form>
-                                    <span style="margin: 0 10px; font-weight: 600;"><?php echo $item['quantity']; ?></span>
-                                    <form method="POST" style="display: inline;">
-                                        <input type="hidden" name="id" value="<?php echo $item['id']; ?>">
-                                        <input type="hidden" name="action" value="increase">
-                                        <button type="submit" class="quantity-btn">+</button>
-                                    </form>
+                                    <div class="quantity-form" style="display: inline-flex; align-items: center; gap: 0.25rem;">
+                                        <form method="POST" style="display: inline;">
+                                            <input type="hidden" name="cart_id" value="<?php echo $item['cart_id']; ?>">
+                                            <input type="hidden" name="action" value="decrease">
+                                            <button type="submit" class="quantity-btn">-</button>
+                                        </form>
+                                        <span class="quantity-display" style="padding: 0 0.4rem; font-weight: 600;"><?php echo $item['quantity']; ?></span>
+                                        <form method="POST" style="display: inline;">
+                                            <input type="hidden" name="cart_id" value="<?php echo $item['cart_id']; ?>">
+                                            <input type="hidden" name="action" value="increase">
+                                            <button type="submit" class="quantity-btn">+</button>
+                                        </form>
+                                    </div>
                                 </td>
                                 <td style="font-weight: 600;">Rs <?php echo number_format($itemTotal, 2); ?></td>
                                 <td style="text-align: center;">
                                     <form method="POST">
-                                        <input type="hidden" name="id" value="<?php echo $item['id']; ?>">
+                                        <input type="hidden" name="cart_id" value="<?php echo $item['cart_id']; ?>">
                                         <input type="hidden" name="action" value="remove">
                                         <button type="submit" class="remove-btn" title="Remove item">&times;</button>
                                     </form>

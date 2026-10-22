@@ -1,3 +1,27 @@
+<?php
+// Ensure session is available
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+$isLoggedIn = isset($_SESSION['user_id']);
+$currentPage = basename($_SERVER['PHP_SELF']);
+
+// Define navigation items dynamically based on auth state
+$navItems = [
+    ['url' => 'index.php', 'label' => 'Portfolio'],
+    ['url' => 'services.php', 'label' => 'Services'],
+    ['url' => 'shop.php', 'label' => 'Shop'],
+    ['url' => 'cart.php', 'label' => 'Cart'],
+    ['url' => 'contact.php', 'label' => 'Contact Us']
+];
+
+if ($isLoggedIn) {
+    $navItems[] = ['url' => 'logout.php', 'label' => 'Logout'];
+} else {
+    $navItems[] = ['url' => 'login.php', 'label' => 'Login'];
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -16,19 +40,6 @@
 </head>
 
 <body>
-    <?php
-    // Get the current file name to detect active page
-    $currentPage = basename($_SERVER['PHP_SELF']);
-
-    // Define navigation items in an array
-    $navItems = [
-        ['url' => 'index.php', 'label' => 'Portfolio'],
-        ['url' => 'services.php', 'label' => 'Services'],
-        ['url' => 'shop.php', 'label' => 'Shop'],
-        ['url' => 'cart.php', 'label' => 'Cart'],
-        ['url' => 'contact.php', 'label' => 'Contact Us']
-    ];
-    ?>
     <header>
         <div class="logo">Reshma Beauty Parlour</div>
 
@@ -42,7 +53,6 @@
         <nav id="mainNav">
             <?php foreach ($navItems as $item): ?>
                 <?php
-                // Check if the current script matches the nav item URL
                 $isActive = ($currentPage === $item['url']) ? 'active' : '';
                 ?>
                 <a href="<?php echo $item['url']; ?>" class="<?php echo $isActive; ?>">
@@ -74,4 +84,3 @@
             });
         });
     </script>
-    <div id="notification-area"></div>
