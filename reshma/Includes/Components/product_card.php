@@ -6,12 +6,13 @@ $title     = htmlspecialchars($product['name'] ?? 'Untitled Product');
 $price     = (float)($product['price'] ?? 0);
 $image     = htmlspecialchars($product['image'] ?? '');
 $stock     = (int)($product['stock'] ?? 0);
-$imagePath = !empty($image) ? "assets/images/{$image}" : "https://via.placeholder.com/400x200?text=Product+Image";
+// $imagePath = !empty($image) ? "assets/images/{$image}" : "https://via.placeholder.com/400x200?text=Product+Image";
+$imagePath = !empty($image) ? "../../reshmaadmin/public/{$image}" : "https://via.placeholder.com/400x200?text=Product+Image";
 ?>
 
 <div class="card product-card" data-id="<?php echo $id; ?>">
     <img src="<?php echo $imagePath; ?>" alt="<?php echo $title; ?>" onerror="this.src='https://via.placeholder.com/400x200?text=Product+Image'">
-
+    
     <div class="card-body">
         <h3 class="card-title"><?php echo $title; ?></h3>
         <p class="card-text"><?php echo htmlspecialchars($product['description'] ?? ''); ?></p>
