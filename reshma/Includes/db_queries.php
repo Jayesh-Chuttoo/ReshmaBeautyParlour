@@ -51,14 +51,15 @@ function getServiceById($pdo, $id)
  * ==========================================
  */
 
-function insertBooking($pdo, $serviceName, $clientName, $contact, $peopleCount, $onsiteVisit, $bookingDate)
+function insertBooking($pdo, $serviceName, $clientName, $contact, $isWhatsapp, $peopleCount, $onsiteVisit, $bookingDate)
 {
-    $stmt = $pdo->prepare("INSERT INTO bookings (service_name, client_name, contact, people_count, onsite_visit, booking_date) VALUES (:service_name, :client_name, :contact, :people_count, :onsite_visit, :booking_date)");
+    $stmt = $pdo->prepare("INSERT INTO bookings (service_name, client_name, contact, is_whatsapp, people_count, onsite_visit, booking_date) VALUES (:service_name, :client_name, :contact, :is_whatsapp, :people_count, :onsite_visit, :booking_date)");
 
     return $stmt->execute([
         'service_name'  => $serviceName,
         'client_name'   => $clientName,
         'contact'       => $contact,
+        'is_whatsapp'   => $isWhatsapp ? 1 : 0,
         'people_count'  => $peopleCount,
         'onsite_visit'  => $onsiteVisit ? 1 : 0,
         'booking_date'  => $bookingDate
