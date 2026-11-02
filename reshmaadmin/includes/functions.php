@@ -270,3 +270,42 @@ function updateProduct($pdo, $id, $name, $description, $price, $stock, $sizes, $
 }
 
 // Keep your existing services, bookings, cart, and user functions here...
+function addProductWithSizes($pdo, $name, $description, $price, $totalStock, $sizesJson, $status, $file)
+{
+    $imagePath = null;
+    if ($file && $file['error'] === UPLOAD_ERR_OK) {
+        $ext = pathinfo($file['name'], PATHINFO_EXTENSION);
+        $filename = 'prod_' . uniqid() . '.' . $ext;
+        $uploadDir = __DIR__ . '/../public/uploads/';
+        if (!is_dir($uploadDir)) mkdir($uploadDir, 0755, true);
+        if (move_uploaded_file($file['tmp_name'], $uploadDir . $filename)) {
+            $imagePath = 'uploads/' . $filename;
+        }
+    }
+    $stmt = $pdo->prepare("INSERT INTO products (name, description, price, stock, sizes, status, image) VALUES (?, ?, ?, ?, ?, ?, ?)");
+    $success = $stmt->execute([$name, $description, $price, $totalStock, $sizesJson, $status, $imagePath]);
+    return ['success' => $success, 'message' => $success ? 'Product added successfully!' : 'Failed to add product.'];
+}
+
+function updateProductWithSizes($pdo, $id, $name, $description, $price, $totalStock, $sizesJson, $status, $file)
+{
+    $imagePath = null;
+    if ($file && $file['error'] === UPLOAD_ERR_OK) {
+        $ext = pathinfo($file['name'], PATHINFO_EXTENSION);
+        $filename = 'prod_' . uniqid() . '.' . $ext;
+        $uploadDir = __DIR__ . '/../public/uploads/';
+        if (!is_dir($uploadDir)) mkdir($uploadDir, 0755, true);
+        if (move_uploaded_file($file['tmp_name'], $uploadDir . $filename)) {
+            $imagePath = 'uploads/' . $filename;
+        }
+    }
+
+    if ($imagePath) {
+        $stmt = $pdo->prepare("UPDATE products SET name=?, description=?, price=?, stock=?, sizes=?, status=?, image=? WHERE id=?");
+        $success = $stmt->execute([$name, $description, $price, $totalStock, $sizesJson, $status, $imagePath, $id]);
+    } else {
+        $stmt = $pdo->prepare("UPDATE products SET name=?, description=?, price=?, stock=?, sizes=?, status=? WHERE id=?");
+        $success = $stmt->execute([$name, $description, $price, $totalStock, $sizesJson, $status, $id]);
+    }
+    return ['success' => $success, 'message' => $success ? 'Product updated successfully!' : 'Failed to update product.'];
+}

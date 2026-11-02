@@ -5,18 +5,19 @@
  * Reshma Beauty Parlour
  */
 
+
 $host     = 'localhost';
 $db       = 'reshma_beauty_db';
 $user     = 'root';
 $password = ''; // Update with your actual database password
 $charset  = 'utf8mb4';
-
-
-// $host     = '127.0.0.1';
-// $db       = 'infinity_reshma_beauty_db';
-// $user     = 'infinity_user';
-// $password = 'XBYkznp)Tr#wpR56'; // Update with your actual database password
-// $charset  = 'utf8mb4';
+/*
+$host     = '127.0.0.1';
+$db       = 'infinity_reshma_beauty_db';
+$user     = 'infinity_user';
+$password = 'XBYkznp)Tr#wpR56'; // Update with your actual database password
+$charset  = 'utf8mb4';
+*/
 
 
 $dsn = "mysql:host=$host;dbname=$db;charset=$charset";

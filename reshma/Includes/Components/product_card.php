@@ -4,14 +4,15 @@ if (!isset($product) || !is_array($product)) return;
 $id        = (int)($product['id'] ?? 0);
 $title     = htmlspecialchars($product['name'] ?? 'Untitled Product');
 $price     = (float)($product['price'] ?? 0);
-$image     = htmlspecialchars($product['image'] ?? '');
+$image     = $product['image'] ?? ''; // e.g. "uploads/prod_6ae4d0e96adbe4.jpg"
 $stock     = (int)($product['stock'] ?? 0);
-// $imagePath = !empty($image) ? "assets/images/{$image}" : "https://via.placeholder.com/400x200?text=Product+Image";
-$imagePath = !empty($image) ? "../../reshmaadmin/public/{$image}" : "https://via.placeholder.com/400x200?text=Product+Image";
+
+// Corrected subdomain spelling: reshmaadmin.infinitydigitalsls.com
+$imagePath = !empty($image) ? "https://reshmaadmin.infinitydigitalsls.com/{$image}" : "https://via.placeholder.com/400x200?text=Product+Image";
 ?>
 
 <div class="card product-card" data-id="<?php echo $id; ?>">
-    <img src="<?php echo $imagePath; ?>" alt="<?php echo $title; ?>" onerror="this.src='https://via.placeholder.com/400x200?text=Product+Image'">
+    <img src="<?php echo htmlspecialchars($imagePath); ?>" alt="<?php echo $title; ?>" onerror="this.src='https://via.placeholder.com/400x200?text=Product+Image'">
     
     <div class="card-body">
         <h3 class="card-title"><?php echo $title; ?></h3>
