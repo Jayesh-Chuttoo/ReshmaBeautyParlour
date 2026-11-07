@@ -1,0 +1,128 @@
+/* Cart Page Custom Styles */
+.cart-main {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+}
+
+.cart-summary-section {
+    margin-top: 2rem;
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 2rem;
+    align-items: start;
+}
+
+@media (max-width: 900px) {
+    .cart-summary-section {
+        grid-template-columns: 1fr;
+    }
+}
+
+.cart-table-wrapper {
+    background: var(--surface, #ffffff);
+    border-radius: var(--radius, 8px);
+    overflow-x: auto; /* Enables horizontal scroll on tiny screens if needed */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.cart-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+    min-width: 500px; /* Prevents cramping */
+}
+
+.cart-table th {
+    background: rgba(0, 0, 0, 0.03);
+    padding: 1rem;
+    font-weight: 600;
+    border-bottom: 1px solid var(--border-color, #eee);
+}
+
+.cart-table td {
+    padding: 1rem;
+    border-bottom: 1px solid var(--border-color, #eee);
+    vertical-align: middle;
+}
+
+.cart-item-info {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.cart-item-img {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 4px;
+    flex-shrink: 0;
+}
+
+/* Fixed Quantity Form & Control Alignment */
+.quantity-form {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    background: var(--surface, #f8f9fa);
+    border: 1px solid var(--border-color, #ccc);
+    border-radius: 4px;
+    padding: 2px 4px;
+}
+
+.quantity-btn {
+    background: transparent;
+    border: none;
+    padding: 0.2rem 0.5rem;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 1rem;
+    color: var(--text-main, #333);
+    transition: opacity 0.2s;
+}
+
+.quantity-btn:hover {
+    opacity: 0.7;
+}
+
+.quantity-display {
+    padding: 0 0.4rem;
+    font-weight: 600;
+    min-width: 20px;
+    text-align: center;
+}
+
+.remove-btn {
+    background: transparent;
+    border: none;
+    color: var(--danger, #e53e3e);
+    cursor: pointer;
+    font-size: 1.5rem;
+    line-height: 1;
+    transition: opacity 0.2s;
+}
+
+.remove-btn:hover {
+    opacity: 0.75;
+}
+
+.cart-summary-card {
+    background: var(--surface, #ffffff);
+    padding: 1.5rem;
+    border-radius: var(--radius, 8px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.summary-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1.25rem;
+    font-size: 1.1rem;
+    font-weight: 700;
+}
+
+.empty-cart {
+    text-align: center;
+    padding: 4rem 1rem;
+}

@@ -1,0 +1,85 @@
+/* ==========================================================================
+   Reshma Beauty Parlour - Admin Theme Stylesheet
+   ========================================================================== */
+
+:root {
+    --primary-salon: #4f46e5;
+    --primary-hover: #4338ca;
+    --salon-accent: #f43f5e;
+    /* Rose gold / Pink accent */
+    --salon-bg: #f8fafc;
+    --salon-card: #ffffff;
+    --salon-border: #e2e8f0;
+}
+
+body {
+    background-color: var(--salon-bg);
+    color: #1e293b;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* Custom Scrollbars */
+.scrollbar-none::-webkit-scrollbar {
+    display: none;
+}
+
+.scrollbar-none {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+/* Luxury Table & Card Enhancements */
+.tab-content {
+    animation: fadeIn 0.25s ease-in-out forwards;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(4px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Custom Table Polish */
+table tr {
+    transition: background-color 0.15s ease;
+}
+
+/* Soft Glow Cards */
+.salon-card {
+    background: var(--salon-card);
+    border: 1px solid var(--salon-border);
+    border-radius: 0.75rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02), 0 2px 4px -1px rgba(0, 0, 0, 0.02);
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.salon-card:hover {
+    box-shadow: 0 10px 15px -3px rgba(79, 70, 229, 0.05), 0 4px 6px -2px rgba(79, 70, 229, 0.02);
+}
+
+/* Luxury Form Inputs */
+input[type="text"],
+input[type="password"],
+input[type="number"],
+select,
+textarea {
+    border-color: #cbd5e1;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus,
+input[type="number"]:focus,
+select:focus,
+textarea:focus {
+    border-color: var(--primary-salon);
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.12);
+    outline: none;
+}
