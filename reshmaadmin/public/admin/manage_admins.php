@@ -1,6 +1,6 @@
 <?php
-require_once __DIR__ . '/../includes/config.php';
-require_once __DIR__ . '/../includes/db_queries.php';
+require_once __DIR__ . '/../../includes/config.php';
+require_once __DIR__ . '/../../includes/db_queries.php';
 
 // Restrict to logged-in admins only
 if (!isset($_SESSION['user_id']) || ($_SESSION['role'] ?? '') !== 'admin') {
@@ -55,7 +55,7 @@ try {
 }
 
 $pageTitle = "Admin & Manager Management - Reshma Beauty Parlour";
-require_once __DIR__ . '/../includes/components/header.php';
+require_once __DIR__ . '/../../includes/components/header.php';
 ?>
 
 <main class="max-w-7xl mx-auto px-4 py-8 flex-1 w-full space-y-8">

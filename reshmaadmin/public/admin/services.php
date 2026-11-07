@@ -1,6 +1,6 @@
 <?php
-require_once __DIR__ . '/../includes/config.php';
-require_once __DIR__ . '/../includes/db_queries.php';
+require_once __DIR__ . '/../../includes/config.php';
+require_once __DIR__ . '/../../includes/db_queries.php';
 
 if (!isset($_SESSION['user_id']) || !in_array($_SESSION['role'] ?? '', ['admin', 'manager'])) {
     header("Location: ../public/index.php");
@@ -23,7 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Handle Image Upload
         $imagePath = $_POST['existing_image'] ?? '';
         if (isset($_FILES['service_image']) && $_FILES['service_image']['error'] === UPLOAD_ERR_OK) {
-            $uploadDir = __DIR__ . '/../public/uploads/';
+            $uploadDir = __DIR__ . '/../uploads/';
             if (!is_dir($uploadDir)) {
                 mkdir($uploadDir, 0755, true);
             }
@@ -62,7 +62,7 @@ if (isset($_GET['edit_id'])) {
 
 $services = function_exists('getAllServices') ? getAllServices($pdo) : [];
 $pageTitle = "Services Management - Reshma Beauty Parlour";
-require_once __DIR__ . '/../includes/components/header.php';
+require_once __DIR__ . '/../../includes/components/header.php';
 ?>
 
 <main class="max-w-7xl mx-auto px-4 py-8 flex-1 w-full space-y-6">

@@ -45,7 +45,7 @@ if (!isset($_SESSION['user_id']) || !in_array($_SESSION['role'] ?? '', ['admin',
                 <?php if (($_SESSION['role'] ?? '') === 'admin'): ?>
                     <a href="manage_admins.php" class="text-xs bg-indigo-800 hover:bg-indigo-700 px-2.5 py-1 rounded-lg text-indigo-100 font-medium transition flex items-center gap-1 shadow-sm"><i class="fa-solid fa-users-gear"></i> Admins</a>
                 <?php endif; ?>
-                <a href="../public/logout.php" class="text-xs bg-rose-600 hover:bg-rose-700 px-3 py-1 rounded-lg text-white font-medium transition flex items-center gap-1 shadow-sm"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
+                <a href="../../public/logout.php" class="text-xs bg-rose-600 hover:bg-rose-700 px-3 py-1 rounded-lg text-white font-medium transition flex items-center gap-1 shadow-sm"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
             </div>
         </div>
     </header>

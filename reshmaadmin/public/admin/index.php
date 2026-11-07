@@ -1,6 +1,6 @@
 <?php
-require_once __DIR__ . '/../includes/config.php';
-require_once __DIR__ . '/../includes/admin_auth.php';
+require_once __DIR__ . '/../../includes/config.php';
+require_once __DIR__ . '/../../includes/admin_auth.php';
 
 requireAdminSession();
 if (!checkPermission('dashboard') && ($_SESSION['role'] ?? '') !== 'admin') {
@@ -32,14 +32,14 @@ try {
 }
 
 $pageTitle = "Admin Dashboard - Reshma Beauty Parlour";
-require_once __DIR__ . '/../includes/components/header.php';
+require_once __DIR__ . '/../../includes/components/header.php';
 ?>
 
 <main class="max-w-7xl mx-auto px-4 py-8 flex-1 w-full space-y-8">
     <div class="bg-gradient-to-r from-indigo-900 to-slate-900 text-white p-8 rounded-3xl shadow-xl flex flex-col md:flex-row justify-between items-center gap-6">
         <div>
             <h1 class="text-3xl font-extrabold tracking-tight">Welcome back, <?= htmlspecialchars($_SESSION['username'] ?? 'Admin') ?>!</h1>
-            <p class="text-indigo-200 mt-1 text-sm">Reshma Beauty Parlour Management System — Triolet, Mauritius</p>
+            <p class="text-indigo-200 mt-1 text-sm">Reshma Beauty Parlour Management System — Petit Raffray, Mauritius</p>
         </div>
         <div class="flex items-center gap-3">
             <span class="px-4 py-1.5 bg-pink-500/20 border border-pink-400/30 text-pink-300 rounded-full text-xs font-bold uppercase tracking-wider">Role: <?= htmlspecialchars(ucfirst($_SESSION['role'] ?? 'Manager')) ?></span>

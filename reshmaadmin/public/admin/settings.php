@@ -1,6 +1,6 @@
 <?php
-require_once __DIR__ . '/../includes/config.php';
-require_once __DIR__ . '/../includes/admin_auth.php';
+require_once __DIR__ . '/../../includes/config.php';
+require_once __DIR__ . '/../../includes/admin_auth.php';
 
 if (!isset($_SESSION['user_id']) || ($_SESSION['role'] ?? '') !== 'admin') {
     header("Location: ../public/index.php");
@@ -39,7 +39,7 @@ try {
 }
 
 $pageTitle = "System Settings - Reshma Beauty Parlour";
-require_once __DIR__ . '/../includes/components/header.php';
+require_once __DIR__ . '/../../includes/components/header.php';
 ?>
 
 <main class="max-w-4xl mx-auto px-4 py-8 flex-1 w-full space-y-6">

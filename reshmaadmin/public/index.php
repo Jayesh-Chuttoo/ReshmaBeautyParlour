@@ -10,14 +10,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt->execute([$username]);
     $user = $stmt->fetch();
 
-    
+
 
     if ($user && password_verify($password, $user['password'])) {
         if (in_array($user['role'] ?? '', ['admin', 'manager'])) {
             $_SESSION['user_id'] = $user['id'];
             $_SESSION['username'] = $user['username'];
             $_SESSION['role'] = $user['role'];
-            header("Location: ../admin/index.php");
+            header("Location: admin/index.php");
             exit;
         } else {
             $error = 'Access denied. Administrator privileges required.';

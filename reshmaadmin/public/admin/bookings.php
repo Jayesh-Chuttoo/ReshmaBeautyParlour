@@ -1,6 +1,6 @@
 <?php
-require_once __DIR__ . '/../includes/config.php';
-require_once __DIR__ . '/../includes/db_queries.php';
+require_once __DIR__ . '/../../includes/config.php';
+require_once __DIR__ . '/../../includes/db_queries.php';
 
 if (!isset($_SESSION['user_id']) || !in_array($_SESSION['role'] ?? '', ['admin', 'manager'])) {
     header("Location: ../public/index.php");
@@ -32,7 +32,7 @@ try {
 }
 
 $pageTitle = "Bookings Management - Reshma Beauty Parlour";
-require_once __DIR__ . '/../includes/components/header.php';
+require_once __DIR__ . '/../../includes/components/header.php';
 ?>
 
 <main class="max-w-7xl mx-auto px-4 py-8 flex-1 w-full space-y-6">
