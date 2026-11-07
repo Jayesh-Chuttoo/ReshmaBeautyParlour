@@ -4,7 +4,7 @@ require_once __DIR__ . '/../includes/db_queries.php';
 
 // Restrict to logged-in admins only
 if (!isset($_SESSION['user_id']) || ($_SESSION['role'] ?? '') !== 'admin') {
-    header("Location: ../public/login.php");
+    header("Location: ../public/index.php");
     exit;
 }
 

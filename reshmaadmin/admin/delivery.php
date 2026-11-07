@@ -3,7 +3,7 @@ require_once __DIR__ . '/../includes/config.php';
 require_once __DIR__ . '/../includes/db_queries.php';
 
 if (!isset($_SESSION['user_id']) || !in_array($_SESSION['role'] ?? '', ['admin', 'manager'])) {
-    header("Location: ../public/login.php");
+    header("Location: ../public/index.php");
     exit;
 }
 

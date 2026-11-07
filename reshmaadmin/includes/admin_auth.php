@@ -6,7 +6,7 @@ if (session_status() === PHP_SESSION_NONE) {
 function requireAdminSession()
 {
     if (!isset($_SESSION['user_id']) || !in_array($_SESSION['role'] ?? '', ['admin', 'manager'])) {
-        header("Location: ../public/login.php");
+        header("Location: ../public/index.php");
         exit;
     }
 }
