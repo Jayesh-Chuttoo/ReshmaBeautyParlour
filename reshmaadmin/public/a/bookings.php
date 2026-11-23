@@ -2,7 +2,7 @@
 require_once __DIR__ . '/../../includes/config.php';
 require_once __DIR__ . '/../../includes/db_queries.php';
 
-if (!isset($_SESSION['user_id']) || !in_array($_SESSION['role'] ?? '', ['admin', 'manager'])) {
+if (!isset($_SESSION['user_id']) || !in_array($_SESSION['role'] ?? '', ['admin', 'manager'], true)) {
     header("Location: ../public/index.php");
     exit;
 }
@@ -10,102 +10,163 @@ if (!isset($_SESSION['user_id']) || !in_array($_SESSION['role'] ?? '', ['admin',
 $message = '';
 $msgType = 'success';
 
+$searchQuery    = trim($_GET['q'] ?? '');
+$statusFilter   = trim($_GET['status'] ?? '');
+$whatsappFilter = trim($_GET['whatsapp'] ?? '');
+$sortBy         = trim($_GET['sort'] ?? 'newest');
+
+$allowedStatuses = ['Pending', 'Confirmed', 'Rescheduled', 'Completed', 'Cancelled'];
+
 // Handle Booking Status Update
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'update_booking_status') {
     $bookingId = intval($_POST['booking_id'] ?? 0);
     $newStatus = trim($_POST['status'] ?? '');
-    $allowed = ['Pending', 'Confirmed', 'Rescheduled', 'Completed', 'Cancelled'];
 
-    if ($bookingId > 0 && in_array($newStatus, $allowed)) {
-        $stmt = $pdo->prepare("UPDATE bookings SET status = ? WHERE id = ?");
-        $success = $stmt->execute([$newStatus, $bookingId]);
+    if ($bookingId > 0 && in_array($newStatus, $allowedStatuses, true)) {
+        $success = updateBookingStatusById($pdo, $bookingId, $newStatus);
         $message = $success ? "Booking #{$bookingId} status updated to '{$newStatus}'." : 'Failed to update status.';
         $msgType = $success ? 'success' : 'error';
+    } else {
+        $message = 'Invalid booking or status selection.';
+        $msgType = 'error';
     }
 }
 
-$bookings = [];
-try {
-    $stmt = $pdo->query("SELECT * FROM bookings ORDER BY id DESC");
-    $bookings = $stmt->fetchAll(PDO::FETCH_ASSOC);
-} catch (Exception $e) {
-}
+$bookings = getFilteredBookings($pdo, $searchQuery, $statusFilter, $whatsappFilter, $sortBy);
 
 $pageTitle = "Bookings Management - Reshma Beauty Parlour";
+$pageCss = "bookings.css";
 require_once __DIR__ . '/../../includes/components/header.php';
 ?>
 
-<main class="max-w-7xl mx-auto px-4 py-8 flex-1 w-full space-y-6">
-    <div class="flex justify-between items-center">
+<main class="bookings-page">
+    <div class="bookings-header">
         <div>
-            <h1 class="text-2xl font-extrabold text-slate-800">Client Appointments & Bookings</h1>
-            <p class="text-xs text-slate-500">Manage client reservations, confirm appointments, and track booking statuses.</p>
+            <h1 class="bookings-title">Client Appointments &amp; Bookings</h1>
+            <p class="bookings-subtitle">Manage client reservations, confirm appointments, and track booking statuses.</p>
         </div>
-        <a href="index.php" class="text-xs bg-slate-200 hover:bg-slate-300 px-3 py-2 rounded-lg font-bold text-slate-700 transition">&larr; Back to Dashboard</a>
+        <a href="index.php" class="bookings-back-link">&larr; Back to Dashboard</a>
     </div>
 
     <?php if (!empty($message)): ?>
-        <div class="p-4 rounded-xl text-sm font-medium <?= $msgType === 'success' ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-800' ?>">
+        <div class="bookings-alert <?= $msgType === 'success' ? 'bookings-alert-success' : 'bookings-alert-error' ?>">
             <?= htmlspecialchars($message) ?>
         </div>
     <?php endif; ?>
 
-    <div class="bg-white rounded-2xl border shadow-sm overflow-hidden">
-        <table class="w-full text-left text-sm">
-            <thead class="bg-slate-50 border-b text-xs uppercase text-slate-600">
+    <!-- Search, Filter & Sort Controls -->
+    <form method="GET" class="bookings-filter-bar">
+        <div>
+            <label for="bookingSearch" class="sr-only">Search bookings</label>
+            <input
+                id="bookingSearch"
+                type="text"
+                name="q"
+                value="<?= htmlspecialchars($searchQuery, ENT_QUOTES, 'UTF-8') ?>"
+                placeholder="Search ID, client, service, or contact..."
+                class="bookings-search-input">
+        </div>
+
+        <div>
+            <label for="statusFilter" class="sr-only">Filter by status</label>
+            <select id="statusFilter" name="status" class="bookings-filter-select">
+                <option value="">All Statuses</option>
+                <?php foreach ($allowedStatuses as $st): ?>
+                    <option value="<?= htmlspecialchars($st, ENT_QUOTES, 'UTF-8') ?>" <?= $statusFilter === $st ? 'selected' : '' ?>>
+                        <?= htmlspecialchars($st) ?>
+                    </option>
+                <?php endforeach; ?>
+            </select>
+        </div>
+
+        <div>
+            <label for="whatsappFilter" class="sr-only">Filter by WhatsApp</label>
+            <select id="whatsappFilter" name="whatsapp" class="bookings-filter-select">
+                <option value="">All Contacts</option>
+                <option value="yes" <?= $whatsappFilter === 'yes' ? 'selected' : '' ?>>WhatsApp Enabled</option>
+                <option value="no" <?= $whatsappFilter === 'no' ? 'selected' : '' ?>>Non-WhatsApp</option>
+            </select>
+        </div>
+
+        <div class="bookings-controls-row">
+            <label for="bookingSort" class="sr-only">Sort bookings</label>
+            <select id="bookingSort" name="sort" class="bookings-filter-select">
+                <option value="newest" <?= $sortBy === 'newest' ? 'selected' : '' ?>>Newest Created</option>
+                <option value="oldest" <?= $sortBy === 'oldest' ? 'selected' : '' ?>>Oldest Created</option>
+                <option value="date_asc" <?= $sortBy === 'date_asc' ? 'selected' : '' ?>>Appointment Date (Soonest)</option>
+                <option value="date_desc" <?= $sortBy === 'date_desc' ? 'selected' : '' ?>>Appointment Date (Latest)</option>
+                <option value="client_asc" <?= $sortBy === 'client_asc' ? 'selected' : '' ?>>Client (A–Z)</option>
+                <option value="client_desc" <?= $sortBy === 'client_desc' ? 'selected' : '' ?>>Client (Z–A)</option>
+                <option value="service_asc" <?= $sortBy === 'service_asc' ? 'selected' : '' ?>>Service (A–Z)</option>
+                <option value="status_asc" <?= $sortBy === 'status_asc' ? 'selected' : '' ?>>Status (A–Z)</option>
+            </select>
+
+            <button type="submit" class="bookings-apply-btn">Apply</button>
+
+            <?php if ($searchQuery !== '' || $statusFilter !== '' || $whatsappFilter !== '' || $sortBy !== 'newest'): ?>
+                <a href="bookings.php" class="bookings-reset-btn">Reset</a>
+            <?php endif; ?>
+        </div>
+    </form>
+
+    <div class="bookings-table-card">
+        <table class="bookings-table">
+            <thead>
                 <tr>
-                    <th class="p-4">ID</th>
-                    <th class="p-4">Client Name</th>
-                    <th class="p-4">Service Name</th>
-                    <th class="p-4">Contact</th>
-                    <th class="p-4">Scheduled Date</th>
-                    <th class="p-4">Status</th>
-                    <th class="p-4">Action</th>
+                    <th>ID</th>
+                    <th>Client Name</th>
+                    <th>Service Name</th>
+                    <th>Contact</th>
+                    <th>Scheduled Date</th>
+                    <th>Status</th>
+                    <th>Action</th>
                 </tr>
             </thead>
-            <tbody class="divide-y divide-slate-100 font-medium">
+            <tbody>
                 <?php if (empty($bookings)): ?>
                     <tr>
-                        <td colspan="7" class="p-6 text-center text-slate-400">No bookings recorded.</td>
+                        <td colspan="7" class="bookings-empty-state">
+                            <?= ($searchQuery !== '' || $statusFilter !== '' || $whatsappFilter !== '') ? 'No matching bookings found.' : 'No bookings recorded.' ?>
+                        </td>
                     </tr>
                     <?php else: foreach ($bookings as $b):
                         $bStatus = $b['status'] ?? 'Pending';
-                        $badgeStyle = match ($bStatus) {
-                            'Completed'   => 'bg-emerald-100 text-emerald-800 border-emerald-300',
-                            'Confirmed'   => 'bg-blue-100 text-blue-800 border-blue-300',
-                            'Rescheduled' => 'bg-amber-100 text-amber-800 border-amber-300',
-                            'Cancelled'   => 'bg-rose-100 text-rose-800 border-rose-300',
-                            default       => 'bg-indigo-100 text-indigo-800 border-indigo-300',
+                        $badgeClass = match ($bStatus) {
+                            'Completed'   => 'booking-status-completed',
+                            'Confirmed'   => 'booking-status-confirmed',
+                            'Rescheduled' => 'booking-status-rescheduled',
+                            'Cancelled'   => 'booking-status-cancelled',
+                            default       => 'booking-status-pending',
                         };
                     ?>
-                        <tr class="hover:bg-slate-50">
-                            <td class="p-4 font-mono text-slate-400">#<?= $b['id'] ?></td>
-                            <td class="p-4 font-bold text-slate-800"><?= htmlspecialchars($b['client_name']) ?></td>
-                            <td class="p-4 text-indigo-600 font-bold"><?= htmlspecialchars($b['service_name']) ?></td>
-                            <td class="p-4 font-mono text-slate-600">
-                                <?= htmlspecialchars($b['contact']) ?>
+                        <tr>
+                            <td class="booking-col-id">#<?= (int)$b['id'] ?></td>
+                            <td class="booking-client-name"><?= htmlspecialchars($b['client_name'] ?? '') ?></td>
+                            <td class="booking-service-name"><?= htmlspecialchars($b['service_name'] ?? '') ?></td>
+                            <td class="booking-contact">
+                                <?= htmlspecialchars($b['contact'] ?? '') ?>
                                 <?php if (!empty($b['is_whatsapp'])): ?>
-                                    <span class="text-emerald-600 font-bold text-xs ml-1"><i class="fa-brands fa-whatsapp"></i></span>
+                                    <span class="booking-whatsapp-icon" title="WhatsApp"><i class="fa-brands fa-whatsapp"></i></span>
                                 <?php endif; ?>
                             </td>
-                            <td class="p-4 text-slate-500 text-xs"><?= htmlspecialchars($b['booking_date']) ?></td>
-                            <td class="p-4">
-                                <span class="px-2.5 py-1 text-xs rounded-full font-bold border <?= $badgeStyle ?>">
+                            <td class="booking-date"><?= htmlspecialchars($b['booking_date'] ?? '') ?></td>
+                            <td>
+                                <span class="booking-status-badge <?= $badgeClass ?>">
                                     <?= htmlspecialchars($bStatus) ?>
                                 </span>
                             </td>
-                            <td class="p-4">
-                                <form method="POST" class="flex items-center gap-2">
+                            <td>
+                                <form method="POST" class="booking-update-form">
                                     <input type="hidden" name="action" value="update_booking_status">
-                                    <input type="hidden" name="booking_id" value="<?= $b['id'] ?>">
-                                    <select name="status" class="text-xs border rounded-lg px-2.5 py-1 bg-white font-medium">
-                                        <option value="Pending" <?= $bStatus === 'Pending' ? 'selected' : '' ?>>Pending</option>
-                                        <option value="Confirmed" <?= $bStatus === 'Confirmed' ? 'selected' : '' ?>>Confirmed</option>
-                                        <option value="Rescheduled" <?= $bStatus === 'Rescheduled' ? 'selected' : '' ?>>Rescheduled</option>
-                                        <option value="Completed" <?= $bStatus === 'Completed' ? 'selected' : '' ?>>Completed</option>
-                                        <option value="Cancelled" <?= $bStatus === 'Cancelled' ? 'selected' : '' ?>>Cancelled</option>
+                                    <input type="hidden" name="booking_id" value="<?= (int)$b['id'] ?>">
+                                    <select name="status" class="booking-status-select">
+                                        <?php foreach ($allowedStatuses as $st): ?>
+                                            <option value="<?= htmlspecialchars($st, ENT_QUOTES, 'UTF-8') ?>" <?= $bStatus === $st ? 'selected' : '' ?>>
+                                                <?= htmlspecialchars($st) ?>
+                                            </option>
+                                        <?php endforeach; ?>
                                     </select>
-                                    <button type="submit" class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs px-3 py-1 rounded-lg font-bold transition">Save</button>
+                                    <button type="submit" class="booking-save-btn">Save</button>
                                 </form>
                             </td>
                         </tr>

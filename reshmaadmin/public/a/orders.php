@@ -2,7 +2,7 @@
 require_once __DIR__ . '/../../includes/config.php';
 require_once __DIR__ . '/../../includes/db_queries.php';
 
-if (!isset($_SESSION['user_id']) || !in_array($_SESSION['role'] ?? '', ['admin', 'manager'])) {
+if (!isset($_SESSION['user_id']) || !in_array($_SESSION['role'] ?? '', ['admin', 'manager'], true)) {
     header("Location: ../public/index.php");
     exit;
 }
@@ -10,79 +10,206 @@ if (!isset($_SESSION['user_id']) || !in_array($_SESSION['role'] ?? '', ['admin',
 $message = '';
 $msgType = 'success';
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'update_order_status') {
-    $orderId = intval($_POST['order_id'] ?? 0);
-    $newStatus = trim($_POST['status'] ?? '');
-    $allowed = ['Pending Verification', 'Processing', 'Out for Delivery', 'Delivered', 'Cancelled', 'Refunded'];
+$searchQuery    = trim($_GET['q'] ?? '');
+$statusFilter   = trim($_GET['status'] ?? '');
+$deliveryFilter = trim($_GET['delivery'] ?? '');
+$sortBy         = trim($_GET['sort'] ?? 'newest');
 
-    if ($orderId > 0 && in_array($newStatus, $allowed)) {
-        $stmt = $pdo->prepare("UPDATE orders SET payment_status = ? WHERE id = ?");
-        $success = $stmt->execute([$newStatus, $orderId]);
+$allowedStatuses = [
+    'Pending Verification',
+    'Processing',
+    'Out for Delivery',
+    'Delivered',
+    'Cancelled',
+    'Refunded',
+];
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'update_order_status') {
+    $orderId   = intval($_POST['order_id'] ?? 0);
+    $newStatus = trim($_POST['status'] ?? '');
+
+    if ($orderId > 0 && in_array($newStatus, $allowedStatuses, true)) {
+        $success = updateOrderStatusById($pdo, $orderId, $newStatus);
         $message = $success ? "Order #{$orderId} status updated to '{$newStatus}'." : 'Failed to update order status.';
         $msgType = $success ? 'success' : 'error';
+    } else {
+        $message = 'Invalid order or status selection.';
+        $msgType = 'error';
     }
 }
 
-$orders = [];
-try {
-    $orderStmt = $pdo->query("SELECT * FROM orders ORDER BY id DESC");
-    $orders = $orderStmt->fetchAll(PDO::FETCH_ASSOC);
-} catch (Exception $e) {
-}
+$orders = getFilteredOrders($pdo, $searchQuery, $statusFilter, $deliveryFilter, $sortBy);
 
 $pageTitle = "Orders Management - Reshma Beauty Parlour";
+$pageCss = "orders.css";
 require_once __DIR__ . '/../../includes/components/header.php';
 ?>
 
-<main class="max-w-7xl mx-auto px-4 py-8 flex-1 w-full space-y-6">
-    <div class="flex justify-between items-center">
+<main class="orders-page">
+    <div class="orders-header">
         <div>
-            <h1 class="text-2xl font-extrabold text-slate-800">Customer Orders</h1>
-            <p class="text-xs text-slate-500">Manage fulfillment, verification, and order statuses.</p>
+            <h1 class="orders-title">Customer Orders</h1>
+            <p class="orders-subtitle">Manage fulfillment, verification, and order statuses.</p>
         </div>
-        <a href="index.php" class="text-xs bg-slate-200 hover:bg-slate-300 px-3 py-2 rounded-lg font-bold text-slate-700 transition">&larr; Back to Dashboard</a>
+        <a href="index.php" class="orders-back-link">&larr; Back to Dashboard</a>
     </div>
 
     <?php if (!empty($message)): ?>
-        <div class="p-4 rounded-xl text-sm font-medium <?= $msgType === 'success' ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-800' ?>">
+        <div class="orders-alert <?= $msgType === 'success' ? 'orders-alert-success' : 'orders-alert-error' ?>">
             <?= htmlspecialchars($message) ?>
         </div>
     <?php endif; ?>
 
-    <div class="grid grid-cols-1 gap-4">
+    <!-- Search, Filter & Sort Controls -->
+    <form method="GET" class="orders-filter-bar">
+        <div class="orders-search-col">
+            <label for="orderSearch" class="sr-only">Search orders</label>
+            <input
+                id="orderSearch"
+                type="text"
+                name="q"
+                value="<?= htmlspecialchars($searchQuery, ENT_QUOTES, 'UTF-8') ?>"
+                placeholder="Search by Order ID, customer name, or phone..."
+                class="orders-search-input">
+        </div>
+
+        <div>
+            <label for="statusFilter" class="sr-only">Filter by status</label>
+            <select id="statusFilter" name="status" class="orders-filter-select">
+                <option value="">All Statuses</option>
+                <?php foreach ($allowedStatuses as $st): ?>
+                    <option value="<?= htmlspecialchars($st, ENT_QUOTES, 'UTF-8') ?>" <?= $statusFilter === $st ? 'selected' : '' ?>>
+                        <?= htmlspecialchars($st) ?>
+                    </option>
+                <?php endforeach; ?>
+            </select>
+        </div>
+
+        <div>
+            <label for="deliveryFilter" class="sr-only">Filter by delivery mode</label>
+            <select id="deliveryFilter" name="delivery" class="orders-filter-select">
+                <option value="">All Delivery Modes</option>
+                <option value="Pickup" <?= $deliveryFilter === 'Pickup' ? 'selected' : '' ?>>Pickup</option>
+                <option value="Delivery" <?= $deliveryFilter === 'Delivery' ? 'selected' : '' ?>>Delivery</option>
+            </select>
+        </div>
+
+        <div class="orders-controls-row">
+            <label for="orderSort" class="sr-only">Sort orders</label>
+            <select id="orderSort" name="sort" class="orders-filter-select">
+                <option value="newest" <?= $sortBy === 'newest' ? 'selected' : '' ?>>Newest First</option>
+                <option value="oldest" <?= $sortBy === 'oldest' ? 'selected' : '' ?>>Oldest First</option>
+                <option value="customer_asc" <?= $sortBy === 'customer_asc' ? 'selected' : '' ?>>Customer (A–Z)</option>
+                <option value="customer_desc" <?= $sortBy === 'customer_desc' ? 'selected' : '' ?>>Customer (Z–A)</option>
+                <option value="status_asc" <?= $sortBy === 'status_asc' ? 'selected' : '' ?>>Status (A–Z)</option>
+            </select>
+
+            <button type="submit" class="orders-apply-btn">Apply</button>
+
+            <?php if ($searchQuery !== '' || $statusFilter !== '' || $deliveryFilter !== '' || $sortBy !== 'newest'): ?>
+                <a href="orders.php" class="orders-reset-btn">Reset</a>
+            <?php endif; ?>
+        </div>
+    </form>
+
+    <div class="orders-list">
         <?php if (empty($orders)): ?>
-            <div class="bg-white p-8 rounded-2xl text-center text-slate-400 border">No orders found.</div>
+            <div class="orders-empty-card">
+                <?= ($searchQuery !== '' || $statusFilter !== '' || $deliveryFilter !== '') ? 'No matching orders found.' : 'No orders found.' ?>
+            </div>
             <?php else: foreach ($orders as $ord):
                 $status = $ord['payment_status'] ?? 'Pending Verification';
             ?>
-                <div class="bg-white p-5 rounded-2xl border shadow-sm space-y-3">
-                    <div class="flex justify-between items-center border-b pb-3">
-                        <span class="font-mono font-bold text-indigo-600 text-base">Order #<?= $ord['id'] ?></span>
-                        <span class="px-3 py-1 text-xs rounded-full font-bold bg-indigo-50 text-indigo-700 border border-indigo-200"><?= htmlspecialchars($status) ?></span>
+                <div class="order-card">
+                    <div class="order-card-header">
+                        <span class="order-id">Order #<?= (int)$ord['id'] ?></span>
+                        <span class="order-status-badge"><?= htmlspecialchars($status) ?></span>
                     </div>
-                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs bg-slate-50 p-3.5 rounded-xl">
-                        <div><span class="text-slate-400 block uppercase font-semibold text-[10px]">Customer</span><strong><?= htmlspecialchars($ord['customer_name'] ?? 'Guest') ?></strong></div>
-                        <div><span class="text-slate-400 block uppercase font-semibold text-[10px]">Phone</span><span class="font-mono text-indigo-600"><?= htmlspecialchars($ord['phone_number'] ?? 'N/A') ?></span></div>
-                        <div><span class="text-slate-400 block uppercase font-semibold text-[10px]">Delivery Mode</span><strong class="text-purple-700"><?= htmlspecialchars($ord['delivery_mode'] ?? 'Pickup') ?></strong></div>
+                    <div class="order-meta-grid">
+                        <div>
+                            <span class="order-meta-label">Customer</span>
+                            <strong class="order-customer-name"><?= htmlspecialchars($ord['customer_name'] ?? 'Guest') ?></strong>
+                        </div>
+                        <div>
+                            <span class="order-meta-label">Phone</span>
+                            <span class="order-phone"><?= htmlspecialchars($ord['phone_number'] ?? 'N/A') ?></span>
+                        </div>
+                        <div>
+                            <span class="order-meta-label">Delivery Mode</span>
+                            <strong class="order-delivery-mode"><?= htmlspecialchars($ord['delivery_mode'] ?? 'Pickup') ?></strong>
+                        </div>
                     </div>
-                    <form method="POST" class="flex items-center gap-3 pt-2">
+                    <form method="POST" class="order-status-form">
                         <input type="hidden" name="action" value="update_order_status">
-                        <input type="hidden" name="order_id" value="<?= $ord['id'] ?>">
-                        <select name="status" class="text-xs border rounded-lg px-3 py-2 bg-white font-medium">
-                            <option value="Pending Verification" <?= $status === 'Pending Verification' ? 'selected' : '' ?>>Pending Verification</option>
-                            <option value="Processing" <?= $status === 'Processing' ? 'selected' : '' ?>>Processing</option>
-                            <option value="Out for Delivery" <?= $status === 'Out for Delivery' ? 'selected' : '' ?>>Out for Delivery</option>
-                            <option value="Delivered" <?= $status === 'Delivered' ? 'selected' : '' ?>>Delivered</option>
-                            <option value="Cancelled" <?= $status === 'Cancelled' ? 'selected' : '' ?>>Cancelled</option>
-                            <option value="Refunded" <?= $status === 'Refunded' ? 'selected' : '' ?>>Refunded</option>
+                        <input type="hidden" name="order_id" value="<?= (int)$ord['id'] ?>">
+                        <select name="status" class="order-status-select">
+                            <?php foreach ($allowedStatuses as $st): ?>
+                                <option value="<?= htmlspecialchars($st, ENT_QUOTES, 'UTF-8') ?>" <?= $status === $st ? 'selected' : '' ?>>
+                                    <?= htmlspecialchars($st) ?>
+                                </option>
+                            <?php endforeach; ?>
                         </select>
-                        <button type="submit" class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs px-4 py-2 rounded-lg font-bold transition">Update Status</button>
+                        <button type="submit" class="order-update-btn">Update Status</button>
                     </form>
+                    <?php $attachmentUrl = getOrderAttachmentUrl($ord); ?>
+                    <?php if ($attachmentUrl): ?>
+                        <div class="order-attachment-box">
+                            <span class="order-meta-label">Attached Image</span>
+                            <div class="order-attachment-row">
+                                <img
+                                    src="<?= htmlspecialchars($attachmentUrl, ENT_QUOTES, 'UTF-8') ?>"
+                                    alt="Order #<?= (int)$ord['id'] ?> attachment"
+                                    class="order-attachment-thumb"
+                                    onclick="openOrderImageModal(this.src, 'Order #<?= (int)$ord['id'] ?> Attachment')">
+                                <button
+                                    type="button"
+                                    class="order-view-img-btn"
+                                    onclick="openOrderImageModal('<?= htmlspecialchars($attachmentUrl, ENT_QUOTES, 'UTF-8') ?>', 'Order #<?= (int)$ord['id'] ?> Attachment')">
+                                    <i class="fa-solid fa-up-right-and-down-left-from-center"></i> View Full Image
+                                </button>
+                            </div>
+                        </div>
+                    <?php endif; ?>
                 </div>
         <?php endforeach;
         endif; ?>
     </div>
 </main>
+<!-- Full Image Lightbox Modal -->
+<div id="orderImageModal" class="order-modal-backdrop" onclick="if (event.target === this) closeOrderImageModal();">
+    <div class="order-modal-card">
+        <div class="order-modal-header">
+            <span id="orderImageModalTitle" class="order-modal-title">Attachment</span>
+            <button type="button" class="order-modal-close" onclick="closeOrderImageModal()" aria-label="Close preview">&times;</button>
+        </div>
+        <div class="order-modal-body">
+            <img id="orderImageModalImg" src="" alt="Order attachment preview" class="order-modal-img">
+        </div>
+    </div>
+</div>
+
+<script>
+    function openOrderImageModal(src, title) {
+        const modal = document.getElementById('orderImageModal');
+        const img = document.getElementById('orderImageModalImg');
+        const heading = document.getElementById('orderImageModalTitle');
+        if (!modal || !img) return;
+        img.src = src;
+        if (heading) heading.textContent = title || 'Attachment';
+        modal.classList.add('is-open');
+    }
+
+    function closeOrderImageModal() {
+        const modal = document.getElementById('orderImageModal');
+        const img = document.getElementById('orderImageModalImg');
+        if (modal) modal.classList.remove('is-open');
+        if (img) img.src = '';
+    }
+
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') closeOrderImageModal();
+    });
+</script>
 </body>
 
 </html>

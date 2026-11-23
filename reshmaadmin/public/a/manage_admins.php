@@ -11,6 +11,30 @@ if (!isset($_SESSION['user_id']) || ($_SESSION['role'] ?? '') !== 'admin') {
 $message = '';
 $msgType = 'success';
 
+/**
+ * Revoke admin/manager privileges by downgrading the account role to 'user'
+ * without deleting the user record.
+ */
+function revokeAdminPrivileges(PDO $pdo, int $targetUserId, int $currentAdminId): array
+{
+    if ($targetUserId <= 0) {
+        return ['ok' => false, 'msg' => 'Invalid user ID.'];
+    }
+
+    if ($targetUserId === $currentAdminId) {
+        return ['ok' => false, 'msg' => 'You cannot remove your own admin privileges.'];
+    }
+
+    $stmt = $pdo->prepare("UPDATE users SET role = 'user' WHERE id = ? AND role IN ('admin', 'manager')");
+    $stmt->execute([$targetUserId]);
+
+    if ($stmt->rowCount() > 0) {
+        return ['ok' => true, 'msg' => "Privileges removed for user #{$targetUserId}. Their account remains active as a standard user."];
+    }
+
+    return ['ok' => false, 'msg' => 'User was not found or no privilege change was needed.'];
+}
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $action = $_POST['action'] ?? '';
 
@@ -21,7 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $role = trim($_POST['role'] ?? 'manager');
 
         if (!empty($username) && !empty($password)) {
-            if (!in_array($role, ['admin', 'manager'])) {
+            if (!in_array($role, ['admin', 'manager'], true)) {
                 $role = 'manager';
             }
 
@@ -44,91 +68,143 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $msgType = 'error';
         }
     }
+
+    // Revoke Admin / Manager Privileges (keep account)
+    if ($action === 'revoke_admin') {
+        $targetUserId = (int)($_POST['target_user_id'] ?? 0);
+        $currentAdminId = (int)$_SESSION['user_id'];
+
+        $result = revokeAdminPrivileges($pdo, $targetUserId, $currentAdminId);
+        $message = $result['msg'];
+        $msgType = $result['ok'] ? 'success' : 'error';
+    }
 }
 
 // Fetch all admins and managers
 $adminUsers = [];
 try {
-    $stmt = $pdo->query("SELECT * FROM users WHERE role IN ('admin', 'manager') ORDER BY id DESC");
+    $stmt = $pdo->query("SELECT id, username, role, created_at FROM users WHERE role IN ('admin', 'manager') ORDER BY id DESC");
     $adminUsers = $stmt->fetchAll(PDO::FETCH_ASSOC);
 } catch (Exception $e) {
 }
 
 $pageTitle = "Admin & Manager Management - Reshma Beauty Parlour";
+$pageCss = "manageAdmin.css";
 require_once __DIR__ . '/../../includes/components/header.php';
 ?>
 
-<main class="max-w-7xl mx-auto px-4 py-8 flex-1 w-full space-y-8">
-    <div class="flex justify-between items-center">
+<main class="manage-admin-page">
+    <div class="page-header">
         <div>
-            <h1 class="text-2xl font-extrabold text-slate-800">Administrator & Manager Portal</h1>
-            <p class="text-xs text-slate-500">Securely create and oversee privileged system operators.</p>
+            <h1 class="page-title">Administrator &amp; Manager Portal</h1>
+            <p class="page-subtitle">Securely create and oversee privileged system operators.</p>
         </div>
-        <div class="flex items-center gap-2">
-            <a href="users.php" class="text-xs bg-slate-200 hover:bg-slate-300 px-3 py-2 rounded-lg font-bold text-slate-700 transition">&larr; View Customers</a>
-            <a href="index.php" class="text-xs bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-2 rounded-lg font-bold transition">Dashboard</a>
+        <div class="header-actions">
+            <a href="users.php" class="nav-pill nav-pill-secondary">&larr; View Customers</a>
+            <a href="index.php" class="nav-pill nav-pill-primary">Dashboard</a>
         </div>
     </div>
 
     <?php if (!empty($message)): ?>
-        <div class="p-4 rounded-xl text-sm font-medium <?= $msgType === 'success' ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-800' ?>">
+        <div class="alert-banner <?= $msgType === 'success' ? 'alert-success' : 'alert-error' ?>">
             <?= htmlspecialchars($message) ?>
         </div>
     <?php endif; ?>
 
-    <!-- Create Admin Form -->
-    <div class="bg-white p-6 rounded-2xl border shadow-sm space-y-4 max-w-2xl">
-        <h2 class="text-lg font-bold text-slate-800"><i class="fa-solid fa-user-plus mr-2 text-purple-600"></i>Create New Admin / Manager Account</h2>
-        <form method="POST" class="space-y-4">
-            <input type="hidden" name="action" value="create_admin">
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                    <label class="block text-xs font-semibold text-slate-600 mb-1">Username</label>
-                    <input type="text" name="username" required class="w-full text-sm border rounded-lg px-3 py-2">
-                </div>
-                <div>
-                    <label class="block text-xs font-semibold text-slate-600 mb-1">Password</label>
-                    <input type="password" name="password" required class="w-full text-sm border rounded-lg px-3 py-2">
-                </div>
-            </div>
-            <div>
-                <label class="block text-xs font-semibold text-slate-600 mb-1">Permission Role</label>
-                <select name="role" class="w-full text-sm border rounded-lg px-3 py-2 bg-white font-medium">
-                    <option value="manager">Manager (Operational Access)</option>
-                    <option value="admin">Admin (Full System Control)</option>
-                </select>
-            </div>
-            <button type="submit" class="w-full bg-purple-600 hover:bg-purple-700 text-white text-xs font-bold py-2.5 rounded-lg transition shadow-sm">Create Privileged Account</button>
-        </form>
-    </div>
+    <!-- Side-by-Side Layout: Create Form (Left) & Active Admins Table (Right) -->
+    <div class="admin-split-grid">
+        <!-- Create Admin Form -->
+        <section class="panel-card create-admin-panel" aria-labelledby="createAdminHeading">
+            <h2 id="createAdminHeading" class="panel-title">
+                <i class="fa-solid fa-user-plus panel-icon"></i>
+                Create New Admin / Manager Account
+            </h2>
 
-    <!-- Existing Admins List -->
-    <div class="bg-white rounded-2xl border shadow-sm overflow-hidden">
-        <div class="p-4 bg-slate-50 border-b font-bold text-slate-700 text-sm">Active Administrators & Managers</div>
-        <table class="w-full text-left text-sm">
-            <thead class="bg-slate-50/50 border-b text-xs uppercase text-slate-600">
-                <tr>
-                    <th class="p-4">ID</th>
-                    <th class="p-4">Username</th>
-                    <th class="p-4">Role Level</th>
-                    <th class="p-4">Created Date</th>
-                </tr>
-            </thead>
-            <tbody class="divide-y divide-slate-100 font-medium">
-                <?php foreach ($adminUsers as $adm): ?>
-                    <tr class="hover:bg-slate-50">
-                        <td class="p-4 font-mono text-slate-400">#<?= $adm['id'] ?></td>
-                        <td class="p-4 font-bold text-slate-800"><?= htmlspecialchars($adm['username']) ?></td>
-                        <td class="p-4">
-                            <span class="px-2.5 py-1 text-xs rounded-full font-bold <?= $adm['role'] === 'admin' ? 'bg-purple-100 text-purple-800' : 'bg-blue-100 text-blue-800' ?>">
-                                <?= htmlspecialchars(ucfirst($adm['role'])) ?>
-                            </span>
-                        </td>
-                        <td class="p-4 text-xs text-slate-500"><?= htmlspecialchars($adm['created_at'] ?? 'N/A') ?></td>
-                    </tr>
-                <?php endforeach; ?>
-            </tbody>
-        </table>
+            <form method="POST" class="admin-form">
+                <input type="hidden" name="action" value="create_admin">
+
+                <div class="form-row-2col">
+                    <div class="form-group">
+                        <label for="adminUsername" class="form-label">Username</label>
+                        <input id="adminUsername" type="text" name="username" required class="form-input">
+                    </div>
+                    <div class="form-group">
+                        <label for="adminPassword" class="form-label">Password</label>
+                        <input id="adminPassword" type="password" name="password" required class="form-input">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="adminRole" class="form-label">Permission Role</label>
+                    <select id="adminRole" name="role" class="form-select">
+                        <option value="manager">Manager (Operational Access)</option>
+                        <option value="admin">Admin (Full System Control)</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="submit-admin-btn">Create Privileged Account</button>
+            </form>
+        </section>
+
+        <!-- Existing Admins List -->
+        <section class="panel-card admin-list-panel" aria-labelledby="activeAdminsHeading">
+            <div class="panel-header">
+                <h2 id="activeAdminsHeading" class="panel-header-title">Active Administrators &amp; Managers</h2>
+            </div>
+
+            <div class="table-responsive">
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Username</th>
+                            <th>Role Level</th>
+                            <th>Created Date</th>
+                            <th>Remove Role</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php if (empty($adminUsers)): ?>
+                            <tr>
+                                <td colspan="5" class="empty-state">No administrators or managers found.</td>
+                            </tr>
+                        <?php else: ?>
+                            <?php foreach ($adminUsers as $adm): ?>
+                                <?php $isSelf = ((int)$adm['id'] === (int)$_SESSION['user_id']); ?>
+                                <tr>
+                                    <td class="col-id">#<?= (int)$adm['id'] ?></td>
+                                    <td class="col-username"><?= htmlspecialchars($adm['username']) ?></td>
+                                    <td>
+                                        <span class="role-badge <?= $adm['role'] === 'admin' ? 'role-admin' : 'role-manager' ?>">
+                                            <?= htmlspecialchars(ucfirst($adm['role'])) ?>
+                                        </span>
+                                    </td>
+                                    <td class="col-date"><?= htmlspecialchars($adm['created_at'] ?? 'N/A') ?></td>
+                                    <td class="col-action">
+                                        <?php if ($isSelf): ?>
+                                            <span class="current-session-label">Current session</span>
+                                        <?php else: ?>
+                                            <form method="POST" onsubmit="return confirm('Remove admin/manager privileges for <?= htmlspecialchars(addslashes($adm['username'])) ?>? Their account will stay active.');" class="inline-form">
+                                                <input type="hidden" name="action" value="revoke_admin">
+                                                <input type="hidden" name="target_user_id" value="<?= (int)$adm['id'] ?>">
+                                                <button type="submit" title="Remove admin privileges" class="revoke-btn" aria-label="Remove admin privileges for <?= htmlspecialchars($adm['username'], ENT_QUOTES, 'UTF-8') ?>">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                        <polyline points="3 6 5 6 21 6"></polyline>
+                                                        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                                                        <line x1="10" y1="11" x2="10" y2="17"></line>
+                                                        <line x1="14" y1="11" x2="14" y2="17"></line>
+                                                    </svg>
+                                                </button>
+                                            </form>
+                                        <?php endif; ?>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                        <?php endif; ?>
+                    </tbody>
+                </table>
+            </div>
+        </section>
     </div>
 </main>
 </body>

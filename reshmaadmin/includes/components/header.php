@@ -1,6 +1,6 @@
 <?php
 if (!isset($_SESSION['user_id']) || !in_array($_SESSION['role'] ?? '', ['admin', 'manager'])) {
-    header("Location: ../public/index.php");
+    header("Location: ../../public/logout.php");
     exit;
 }
 ?>
@@ -17,6 +17,10 @@ if (!isset($_SESSION['user_id']) || !in_array($_SESSION['role'] ?? '', ['admin',
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Custom Salon Theme CSS -->
     <link rel="stylesheet" href="../public/assets/css/style.css">
+    <!-- Dynamically load Page Specific CSS if set -->
+    <?php if (isset($pageCss) && !empty($pageCss)): ?>
+        <link rel="stylesheet" href="../../public/a/css/<?php echo htmlspecialchars($pageCss, ENT_QUOTES, 'UTF-8'); ?>">
+    <?php endif; ?>
 </head>
 
 <body class="bg-gray-50 text-gray-900 min-h-screen flex flex-col">
