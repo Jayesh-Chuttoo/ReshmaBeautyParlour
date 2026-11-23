@@ -1,0 +1,87 @@
+/* Sign Up Page Custom Styles */
+.signup-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 75vh;
+    background-color: var(--background);
+    padding: 2rem 1rem;
+}
+
+.signup-card {
+    background: var(--surface, #ffffff);
+    border: 1px solid rgba(250, 128, 114, 0.2);
+    border-radius: calc(var(--radius, 8px) * 2);
+    padding: 3rem 2.5rem;
+    width: 100%;
+    max-width: 420px;
+    box-shadow: 0 10px 30px rgba(51, 45, 46, 0.05);
+}
+
+.signup-card h2 {
+    font-family: var(--font-heading);
+    font-size: 2rem;
+    color: var(--text-main);
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+.signup-error {
+    background: rgba(229, 62, 62, 0.1);
+    color: var(--danger, #e53e3e);
+    padding: 0.75rem 1rem;
+    border-radius: var(--radius, 8px);
+    margin-bottom: 1.5rem;
+    font-size: 0.9rem;
+    text-align: center;
+}
+
+.signup-form .form-group {
+    margin-bottom: 1.25rem;
+    text-align: left;
+}
+
+.signup-form label {
+    display: block;
+    margin-bottom: 0.4rem;
+    font-weight: 500;
+    font-size: 0.9rem;
+    color: var(--text-main);
+}
+
+.signup-form .form-control {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--border-color, #ccc);
+    border-radius: var(--radius, 8px);
+    font-size: 1rem;
+    background-color: var(--surface, #ffffff);
+    color: var(--text-main);
+    box-sizing: border-box;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.signup-form .form-control:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(250, 128, 114, 0.15);
+}
+
+.signup-btn {
+    width: 100%;
+    margin-top: 1rem;
+    padding: 0.85rem;
+    border-radius: 50px;
+    background: var(--primary);
+    color: #ffffff;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.2s;
+    box-shadow: 0 10px 25px rgba(250, 128, 114, 0.3);
+}
+
+.signup-btn:hover {
+    background: var(--primary-dark, #e06d60);
+    transform: translateY(-2px);
+}

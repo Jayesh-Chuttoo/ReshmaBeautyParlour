@@ -1,0 +1,8 @@
+# Prevent directory listing
+Options -Indexes
+
+# Protect configuration files from direct browser access
+<FilesMatch "^\.env|db\.php|functions\.php">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
